@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blackjack Interface</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Ajuste de padding para navbar fija */
+    body {
+      margin: 0;
+      padding-top: 70px; /* Altura navbar */
+      background: #0b4e28 url('https://www.transparenttextures.com/patterns/dark-felt.png') repeat;
+      font-family: 'Segoe UI', sans-serif;
+      color: #f0e6c8;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+    .table-area {
+      position: relative;
+      height: calc(100vh - 70px); /* Restar navbar */
+      text-align: center;
+      padding: 1rem;
+    }
+    /* Círculo punteado interior */
+    .table-area::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 60%; height: 60%;
+      border: 3px dashed rgba(255,255,255,0.15);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    /* Viñeta oscura en bordes */
+    .table-area::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+      pointer-events: none;
+    }
+    /* Título Blackjack */
+    .text-gold {
+      position: relative;
+      z-index: 1;
+      color: #d4af37;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    /* Cartas, con mayor separación y posición ajustada */
+    .dealer-cards, .player-cards {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 3rem; /* Separación mayor */
+      z-index: 1;
+    }
+    .dealer-cards { top: 30%; } /* Bajadas respecto al círculo */
+    .player-cards { bottom: 25%; }
+    .card-img {
+      width: 64px; /* 20% más pequeña que 80px */
+      box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+      border-radius: 8px;
+    }
+    /* Botones de acción: centrados y con wrap */
+    .actions {
+      position: absolute;
+      bottom: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      z-index: 1;
+    }
+    .action-btns .btn {
+      min-width: 90px;
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      padding: .4rem .8rem;
+      z-index: 1;
+    }
+    /* Apuesta y botón DEAL */
+    .bet-deal {
+      position: absolute;
+      bottom: 4%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      z-index: 1;
+    }
+    .bet-deal input[type="range"] {
+      width: 140px;
+    }
+    .btn-deal {
+      font-size: 1rem;
+      padding: .5rem 1.25rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+      font-weight: 600;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar estilo casino -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="home.html">
+        <span>APUE$TA$</span><span class="ms-1 text-warning">777</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#casinoNav" aria-controls="casinoNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="casinoNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item active"><a class="nav-link" href="home.html">Inicio</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="juegosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Juegos</a>
+            <ul class="dropdown-menu" aria-labelledby="juegosDropdown">
+              <li><a class="dropdown-item" href="blackjack.html">Blackjack</a></li>
+              <li><a class="dropdown-item" href="ruleta.html">Ruleta</a></li>
+              <li><a class="dropdown-item" href="jackpot.html">Jackpot</a></li>
+            </ul>
+          </li>
+        </ul>
+        <span class="navbar-text me-3">CASINO</span>
+        <span class="navbar-text me-3">Créditos Totales: <strong id="totalCredits">$1000</strong></span>
+        <div class="dropdown">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">Usuario</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="#">Perfil</a></li>
+            <li><a class="dropdown-item" href="#">Configuración</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="table-area">
+    <h1 class="text-gold">Blackjack</h1>
+    <!-- Cartas del dealer -->
+    <div class="dealer-cards">
+      <img src="https://deckofcardsapi.com/static/img/back.png" alt="Back Card" class="card-img">
+      <img src="https://deckofcardsapi.com/static/img/0S.png" alt="10 of Spades" class="card-img">
+    </div>
+    <!-- Cartas del jugador -->
+    <div class="player-cards">
+      <img src="https://deckofcardsapi.com/static/img/AD.png" alt="Ace of Diamonds" class="card-img">
+      <img src="https://deckofcardsapi.com/static/img/JD.png" alt="Jack of Diamonds" class="card-img">
+    </div>
+    <!-- Botones de acción -->
+    <div class="actions action-btns">
+      <button class="btn btn-outline-warning">Hit</button>
+      <button class="btn btn-outline-warning">Stand</button>
+      <button class="btn btn-outline-warning">Double Down</button>
+      <button class="btn btn-outline-warning">Split</button>
+    </div>
+    <!-- Apuesta y Deal -->
+    <div class="bet-deal">
+      <span class="text-gold">BET</span>
+      <input type="range" class="form-range" min="0" max="500" step="25">
+      <button class="btn btn-warning text-dark btn-deal">DEAL</button>
+    </div>
+  </div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
