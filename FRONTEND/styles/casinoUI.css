@@ -1,0 +1,43 @@
+.controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+/* Botones individuales */
+#undoButton {
+    background-color: #1a1a1a; /* negro suave */
+}
+
+#resetButton {
+    background-color: #8B0000; /* rojo vino */
+}
+
+#spinButton {
+    background-color: #022f00; /* negro suave */
+}
+
+/* Hover (pasar el mouse) */
+button:hover {
+    background-color: #333333;
+    box-shadow: 0px 6px 12px rgba(0,0,0,0.7);
+}
+
+/* Active (al hacer clic) */
+button:active {
+    transform: scale(0.97);
+}
