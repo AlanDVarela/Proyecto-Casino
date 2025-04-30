@@ -1,0 +1,275 @@
+/* jackpot_UI.css (sin estilos de navbar) */
+:root {
+    --gold: #d4af37;
+  }
+  
+  /* Reset y body */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    padding-top: 100px; /* Compensa navbar fija */
+    background: #10220e;
+    font-family: Arial, sans-serif;
+    color: #f5f5f5;
+  }
+  
+  /* Layout principal: historial, cabina y estadísticas */
+  .layout.flex-row {
+    display: grid;
+    grid-template-columns: 1fr 360px 1fr;
+    justify-items: center;
+    align-items: start;
+    column-gap: 40px;
+    padding: 20px;
+    width: 100%;
+    margin: 60px auto 0; /* Separa el grid hacia abajo */
+  }
+  
+  /* Panel de historial a la izquierda */
+  .history-panel {
+    max-width: 300px;
+    background: #1c3d27;
+    border: 4px solid var(--gold);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.5);
+  }
+  .history-panel h5 {
+    color: var(--gold);
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .history-panel ul {
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0;
+  }
+  .history-panel li {
+    white-space: nowrap;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    background: #272727;
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.9rem;
+  }
+  .history-panel .clear-btn {
+    width: 100%;
+    margin-top: 8px;
+  }
+  
+  /* Cabina de la máquina tragaperras */
+  .cabina {
+    background:
+      linear-gradient(135deg, #333 0%, #111 100%),
+      url('../assets/wood-panel.jpg');
+    background-blend-mode: multiply;
+    border: 8px solid var(--gold);
+    border-radius: 24px;
+    box-shadow:
+      inset 0 0 30px rgba(0,0,0,0.7),
+      0 10px 20px rgba(0,0,0,0.5);
+    padding: 20px;
+    width: 360px;
+    margin: 0;
+    position: relative;
+  }
+  .cabina::before,
+  .cabina::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    bottom: 20px;
+    width: 20px;
+    background: linear-gradient(90deg, #555, #333);
+    border-radius: 10px;
+  }
+  .cabina::before { left: -28px; }
+  .cabina::after  { right: -28px; }
+  
+  /* Efecto Neón */
+  .cabina.neon {
+    position: relative;
+    padding-top: 40px; /* espacio para las luces neón */
+  }
+  .neon-lights {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+  }
+  .neon-lights .bulb {
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle at center, #f90, #e33);
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255,165,0,0.8);
+    animation: flicker 2s infinite;
+  }
+  @keyframes flicker {
+    0%,18%,22%,25%,53%,57%,100% { opacity: 1; }
+    20%,24%,55%             { opacity: 0.4; }
+  }
+  
+  /* Máquina interior */
+  .machine {
+    margin: 0 auto 16px;
+    box-shadow: inset 0 0 8px rgba(255,255,255,0.1);
+    position: relative;
+  }
+  .payout {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .reels {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 8px;
+  }
+  .reel {
+    flex: 1;
+    margin: 0 4px;
+    height: 80px;
+    background: linear-gradient(to bottom, #2a2a2a, #111);
+    border: 4px solid var(--gold);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+  }
+  .lever {
+    width: 20px;
+    height: 160px;
+    background: linear-gradient(145deg, #666, #444);
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -40px;
+    cursor: pointer;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.7), 0 4px 8px rgba(0,0,0,0.5);
+    transform-origin: top center;
+    transition: transform 0.2s;
+  }
+  .lever.active {
+    transform: rotate(45deg);
+  }
+  .lever::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -10px;
+    width: 40px;
+    height: 40px;
+    background: #e33;
+    border: 4px solid #900;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.7);
+  }
+  
+  /* Silla de casino debajo de la cabina */
+  .cabina .chair {
+    width: 120px;
+    height: 80px;
+    background: url('../assets/chair.png') no-repeat center bottom;
+    background-size: contain;
+    margin: -20px auto 20px;
+  }
+  
+  /* Controles y botón girar */
+  .controls {
+    text-align: center;
+  }
+  .controls input {
+    width: 60px;
+    padding: 4px;
+    border: 2px solid var(--gold);
+    border-radius: 4px;
+    background: #272727;
+    color: #fff;
+    margin-right: 8px;
+  }
+  .controls span {
+    color: var(--gold);
+    font-weight: bold;
+  }
+  .spin-button {
+    display: block;
+    margin: 12px auto;
+    padding: 12px 0;
+    width: 60%;
+    background: linear-gradient(145deg, #3b3b3b, #272727);
+    border: 4px solid var(--gold);
+    border-radius: 8px;
+    color: var(--gold);
+    font-size: 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.5);
+    transition: background 0.2s;
+  }
+  .spin-button:hover {
+    background: linear-gradient(145deg, #454545, #2f2f2f);
+  }
+  
+  /* Sidebar estadísticas a la derecha */
+  .sidebar {
+    align-self: flex-start;
+    max-width: 200px;
+    background: #1c3d27;
+    border: 4px solid var(--gold);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.5);
+    margin: 0;
+  }
+  .sidebar .stat {
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .sidebar .label {
+    display: block;
+    color: var(--gold);
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .sidebar .value {
+    color: #fff;
+    font-size: 1.4rem;
+  }
+  
+  /* Luces decorativas abajo */
+  .bottom-lights {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 40px 0;
+  }
+  .bottom-lights .light {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(255,255,255,0.8);
+    animation: flicker 1.8s infinite;
+  }
+  .bottom-lights .light:nth-child(1) { background: radial-gradient(circle at center, #f00, #a00); }
+  .bottom-lights .light:nth-child(2) { background: radial-gradient(circle at center, #ff0, #aa0); }
+  .bottom-lights .light:nth-child(3) { background: radial-gradient(circle at center, #0f0, #070); }
+  .bottom-lights .light:nth-child(4) { background: radial-gradient(circle at center, #0ff, #077); }
+  .bottom-lights .light:nth-child(5) { background: radial-gradient(circle at center, #00f, #007); }
+  .bottom-lights .light:nth-child(6) { background: radial-gradient(circle at center, #f0f, #707); }
+  .bottom-lights .light:nth-child(7) { background: radial-gradient(circle at center, #ffa500, #cc8400); }
+  
