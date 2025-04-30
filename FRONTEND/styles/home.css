@@ -1,0 +1,70 @@
+body {
+    background-color: #0d0d0d; /* negro elegante, no 100% */
+    background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-attachment: fixed;
+    color: gold;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+  }
+
+  .container-cards {
+    display: flex;
+    justify-content: center;
+    gap: 50px; /* Espacio entre tarjetas */
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  
+  .card {
+    background-color: #131313;
+    border: 1.5px solid #d4af37;
+    border-radius: 16px;
+    padding: 30px;
+    width: 280px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.1);
+  }
+  
+  .card:hover {
+    transform: scale(1.03);
+  }
+  
+  .card img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  .card-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: gold;
+  }
+  
+  .button {
+    background: linear-gradient(to bottom, #d4af37, #b8860b);
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 10px;
+    border: none;
+    box-shadow: inset 0 0 0 1px #fff2, 0 4px 10px rgba(0,0,0,0.6);
+    color: black;
+    transition: all 0.2s ease-in-out;
+    width: 80%;
+    margin-top: auto;
+  }
+  
+  .button:hover {
+    background: linear-gradient(to top, #d4af37, #b8860b);
+    transform: scale(1.05);
+  }
