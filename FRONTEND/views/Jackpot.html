@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Jackpot</title>
+    <!-- Bootstrap v2.3.2 CSS -->
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <!-- Navbar CSS -->
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <!-- Interfaz Jackpot CSS -->
+    <link rel="stylesheet" href="../styles/Jackpot/jackpot_UI.css">
+</head>
+
+<body>
+    <!-- Navbar full-width con colores de casino -->
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="home.html">
+                <span>APUE$TA$</span>
+                <span class="brand-777">777</span>
+            </a>
+            <span class="navbar-title">CASINO</span>
+            <div class="navbar-extras">
+                <span class="credits">Créditos Totales: <strong id="totalCredits">$1000</strong></span>
+                <div class="dropdown user-dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Perfil</a></li>
+                        <li><a href="#">Configuración</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="active"><a href="home.html">Inicio</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Juegos <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="blackjack.html">Blackjack</a></li>
+                            <li><a href="ruleta.html">Ruleta</a></li>
+                            <li><a href="jackpot.html">Jackpot</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor principal en grid: historial, cabina y estadísticas -->
+    <div class="layout flex-row">
+        <!-- Historial a la izquierda -->
+        <div class="history-panel">
+            <h5>Historial</h5>
+            <ul id="history"></ul>
+            <button id="clearHistoryBtn" class="clear-btn">Borrar Historial</button>
+        </div>
+
+        <!-- Cabina de juego al centro con neón -->
+        <div class="cabina neon">
+            <!-- Luces neón -->
+            <div class="neon-lights">
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+            </div>
+
+            <div class="machine">
+                <div class="payout">PAYOUT</div>
+                <div class="reels">
+                    <div class="reel">7</div>
+                    <div class="reel">🍒</div>
+                    <div class="reel">🔔</div>
+                </div>
+                <div class="lever" id="lever"></div>
+            </div>
+
+            <!-- Silla de casino debajo de la máquina -->
+            <div class="chair"></div>
+
+            <div class="controls">
+                <input type="number" id="bet" value="10" min="1"><span>APUESTA</span>
+            </div>
+            <div class="spin-button" id="spinBtn">GIRAR</div>
+        </div>
+
+        <!-- Sidebar estadísticas a la derecha -->
+        <aside class="sidebar">
+            <div class="stat"><span class="label">Balance</span><span class="value" id="balanceDisplay">$1000</span>
+            </div>
+            <div class="stat"><span class="label">Apuesta</span><span class="value" id="betDisplay">$0</span></div>
+            <div class="stat"><span class="label">Ganancia</span><span class="value" id="winDisplay">$0</span></div>
+        </aside>
+    </div>
+    <!-- Luces decorativas abajo -->
+    <div class="bottom-lights">
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light"></span>
+    </div>
+
+
+    <!-- JS dependencies -->
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="../controllers/jackpot_game_controller.js"></script>
+</body>
+
+</html>
