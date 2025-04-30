@@ -29,38 +29,22 @@
   }
   
   /* Panel de historial a la izquierda */
-  .history-panel {
-    max-width: 300px;
-    background: #1c3d27;
-    border: 4px solid var(--gold);
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: inset 0 0 6px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.5);
-  }
-  .history-panel h5 {
-    color: var(--gold);
-    margin-bottom: 8px;
-    text-align: center;
-  }
-  .history-panel ul {
-    list-style: none;
-    max-height: 200px;
-    overflow-y: auto;
-    padding: 0;
-  }
-  .history-panel li {
-    white-space: nowrap;
-    padding: 4px 8px;
-    margin-bottom: 4px;
-    background: #272727;
-    border: 1px solid #333;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 0.9rem;
-  }
   .history-panel .clear-btn {
+    display: block;
     width: 100%;
-    margin-top: 8px;
+    padding: 10px;
+    background: var(--gold);
+    color: #10220e;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .history-panel .clear-btn:hover {
+    background: #f0d75a;
+    transform: translateY(-1px);
   }
   
   /* Cabina de la máquina tragaperras */
@@ -272,4 +256,16 @@
   .bottom-lights .light:nth-child(5) { background: radial-gradient(circle at center, #00f, #007); }
   .bottom-lights .light:nth-child(6) { background: radial-gradient(circle at center, #f0f, #707); }
   .bottom-lights .light:nth-child(7) { background: radial-gradient(circle at center, #ffa500, #cc8400); }
+  .history-panel h5 {
+    text-align: center;            /* Centra el texto */
+    font-size: 1.2rem;              /* Tamaño ligeramente mayor */
+    font-weight: bold;              /* Negrita */
+    color: #fff;                    /* Texto blanco */
+    background: #8b0000;            /* Fondo rojo casino */
+    padding: 8px 0;                 /* Espacio arriba y abajo */
+    border: 2px solid var(--gold);  /* Borde dorado */
+    border-radius: 6px;             /* Bordes redondeados */
+    margin-bottom: 12px;            /* Separación inferior */
+  }
+  
   
