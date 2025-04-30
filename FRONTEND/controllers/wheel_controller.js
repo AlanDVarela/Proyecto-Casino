@@ -77,7 +77,7 @@ function draw() {
     // Círculo negro central
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius * 0.8, 0, Math.PI * 2);  // 10% del radio
-    ctx.fillStyle = "#110";
+    ctx.fillStyle = "#10";
     ctx.fill();
     ctx.closePath();
   }

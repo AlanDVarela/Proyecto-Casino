@@ -20,9 +20,9 @@
           <div id="Card">
             <h5>Balance</h5>
             <p id="balanceAmount">$1000</p>
-            <h6>Apuesta</h6>
+            <h5>Apuesta</h5>
             <p id="totalBet">$0</p>
-            <h6>Ganancia</h6>
+            <h5>Ganancia</h5>
             <p id="winningAmount">$0</p>
           </div>
         </div>
@@ -128,11 +128,26 @@
     </div>
 
     <div class="controls text-center">
+      <button class="button" id="statsButton">Estadísticas</button>
       <button id="undoButton">UNDO</button>
       <button id="resetButton">RESET</button>
       <button id="spinButton" onclick="spin()">SPIN</button>
   </div>
 
+</div>
+
+
+<!-- Modal de Estadísticas -->
+<div id="statsModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h4>Estadísticas</h4>
+    <div id="statsSummary">
+      <p><strong>Ratio Win/Loss:</strong> <span id="ratio"></span></p>
+      <p><strong>Beneficio:</strong> $<span id="netResult"></span></p>
+    </div>
+    <ul id="statsList"></ul>
+  </div>
 </div>
 
 

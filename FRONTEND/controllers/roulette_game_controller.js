@@ -83,6 +83,7 @@ function processWinner(winner) {
 
 function calculateWinnings(result, color) {
   let payout = 0;
+  const totalBetBeforeRound = totalBet;
 
   for (const [key, amount] of Object.entries(placedBets)) {
     const num = parseInt(key);
@@ -104,8 +105,20 @@ function calculateWinnings(result, color) {
 
   winnings = payout;
   balance += payout;
+
+  const netGain = payout - totalBetBeforeRound;
+  gameStats.push({
+    result: netGain > 0 ? "win" : "loss",
+    amount: netGain,
+    number: result // << número de la ruleta
+  });
+
+
+
+
   placedBets = {};
   totalBet = 0;
+
 
   document.querySelectorAll(".placed-chip").forEach(ch => ch.remove());
   placedChipsStack = []; // Limpia la pila también
@@ -207,4 +220,50 @@ function mostrarGanadores(n) {
     item.innerHTML = `<span class="number">${num}</span>`;
     container.appendChild(item);
   });
+}
+
+
+let gameStats = []; // { result: 'win'|'loss', amount: 100 }
+
+document.getElementById("statsButton").addEventListener("click", () => {
+  updateStatsModal();
+  document.getElementById("statsModal").style.display = "flex";
+});
+
+document.querySelector(".modal .close").addEventListener("click", () => {
+  document.getElementById("statsModal").style.display = "none";
+});
+
+function logGame(result, amount) {
+  gameStats.push({
+    result: netGain > 0 ? "win" : "loss",
+    amount: netGain,
+    number: result 
+  });
+}
+
+function updateStatsModal() {
+  const statsList = document.getElementById("statsList");
+  const wins = gameStats.filter(g => g.result === "win");
+  const losses = gameStats.filter(g => g.result === "loss");
+
+  let net = 0;
+  statsList.innerHTML = "";
+
+  gameStats.forEach((g, index) => {
+    const li = document.createElement("li");
+    li.className = g.result;
+
+    const resultText = g.result === "win" 
+      ? `Ganaste $${g.amount}` 
+      : `Perdiste $${Math.abs(g.amount)}`;
+
+    li.textContent = `${index + 1}. ${resultText} - Número: ${g.number}`;
+    
+    net += g.amount;
+    statsList.appendChild(li);
+  });
+
+  document.getElementById("ratio").textContent = `${wins.length} / ${losses.length}`;
+  document.getElementById("netResult").textContent = net;
 }

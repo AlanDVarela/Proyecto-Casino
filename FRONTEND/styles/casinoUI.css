@@ -6,6 +6,7 @@
 }
 
 button {
+    background-color: #1a1a1a; 
     padding: 15px 30px;
     font-size: 20px;
     font-weight: bold;
@@ -18,7 +19,16 @@ button {
     transition: all 0.3s ease;
 }
 
+
+
+
+
+
+
 /* Botones individuales */
+#statsButton {
+    background-color: #041c00;
+}
 #undoButton {
     background-color: #1a1a1a; /* negro suave */
 }
@@ -28,16 +38,14 @@ button {
 }
 
 #spinButton {
-    background-color: #022f00; /* negro suave */
+    background-color: #054701; /* negro suave */
 }
 
-/* Hover (pasar el mouse) */
 button:hover {
     background-color: #333333;
-    box-shadow: 0px 6px 12px rgba(0,0,0,0.7);
+    box-shadow: 0px 10px 12px rgba(0,0,0,0.7);
 }
 
-/* Active (al hacer clic) */
 button:active {
     transform: scale(0.97);
 }

@@ -100,16 +100,24 @@ body {
 
 /* ----- TABLA DE APUESTAS ----- */
 .table-area {
-  background-color: #064420;
-    background-image:
-      radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px),
-      radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-position: 0 0, 5px 5px;
-    background-size: 10px 10px;
-  width: 100%;
+  width: 90vw; /* 90% del ancho del viewport */
+  max-width: 90vw;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   padding: 20px;
+  background-color: #064420;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-position: 0 0, 5px 5px;
+  background-size: 10px 10px;
+}
+
+@media (max-width: 768px) {
+  .table-area {
+    width: 100vw; /* En móvil, que use todo el ancho */
+  }
 }
 
 .betting-layout {
@@ -120,21 +128,29 @@ body {
 
 .roulette-table {
   border-collapse: collapse;
+  border-spacing: 0;
   margin: 0 auto;
   table-layout: fixed;
 }
 
 .roulette-table td {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   padding: 0;
   text-align: center;
   vertical-align: middle;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 18px;
   position: relative;
   color: white;
   border: 2.5px solid #bc9c31;
+}
+@media (max-width: 1024px) {
+  .roulette-table td {
+    width: 60px;
+    height: 60px;
+    font-size: 16px;
+  }
 }
 
 .roulette-table td:empty {
@@ -173,6 +189,10 @@ body {
   font-size: 14px;
 }
 
+.cell.green:hover {
+  background-color: #09602d;
+}
+
 .cell.black:hover {
   background-color: #444;
 }
@@ -188,14 +208,14 @@ body {
 /* Estilo base de todas las fichas */
 .chip {
   position: relative;
-  width: 45px;
-  height: 45px;
+  width: 55px;
+  height: 55px;
   border-radius: 100%;
-  font-size: 10px;
+  font-size: 15px;
   font-weight: bold;
   color: white;
   text-align: center;
-  line-height: 36px;
+  line-height: 45px;
   margin: 4px;
   cursor: pointer;
   z-index: 1;
@@ -263,51 +283,6 @@ td .placed-chip:hover {
   cursor: pointer;
 }
 
-
-/* ----- CELDA DEL 0 CON TRIÁNGULO ----- */
-.zero-cell {
-  position: relative;
-  background-color: green;
-  font-weight: bold;
-  color: white;
-  text-align: center;
-  vertical-align: middle;
-  border: 1px solid rgb(168, 146, 77);
-  z-index: 1;
-  padding-left: 10px;
-  text-indent: -10px;
-}
-
-.zero-cell::before {
-  content: '';
-  position: absolute;
-  left: -20px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-top: 75px solid transparent;
-  border-bottom: 75px solid transparent;
-  border-right: 21px solid #064420;
-  z-index: 1;
-}
-
-.zero-cell::after {
-  content: '';
-  position: absolute;
-  left: -23px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-top: 76px solid transparent;
-  border-bottom: 76px solid transparent;
-  border-right: 22px solid #bc9c31;
-  z-index: 0;
-}
-
-
-
 /*Ganadores*/
 /* Contenedor del card */
 #Card {
@@ -342,11 +317,14 @@ td .placed-chip:hover {
 
 /* Título del card */
 #Card h5 {
-  font-size: 14px;
+  font-size: 24px;
   text-align: center;
   margin-bottom: 12px;
   letter-spacing: 1px;
   color: white;
+}
+#Card p{
+  font-size: 20px;
 }
 
 /* Scroll horizontal para ganadores solo en pantallas pequeñas */
@@ -424,3 +402,46 @@ td .placed-chip:hover {
 .ganador-item .number {
   line-height: 42px;
 }
+
+
+
+
+
+/*modal*/
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+
+.modal-content {
+  background: rgba(29, 29, 29, 0.932);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80vh;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 500px;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 10px; right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+#statsList li {
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.win { background-color: #064420; }
+.loss { background-color: #8B0000; }
