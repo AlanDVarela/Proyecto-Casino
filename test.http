@@ -1,0 +1,48 @@
+### Obtener todos los usuarios (Solo admin)
+GET http://localhost:3000/api/users
+x-auth: admin_auth
+
+###
+
+### Registrar nuevo usuario
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "name": "Alan Casino",
+  "email": "alan@example.com",
+  "password": "12345678"
+}
+
+###
+
+### Login de usuario (loginUser)
+POST http://localhost:3000/api/users/login
+Content-Type: application/json
+
+{
+  "email": "alan@example.com",
+  "password": "12345678"
+}
+
+###
+
+### Obtener un usuario por ID (Reemplaza ID)
+GET http://localhost:3000/api/users/ID_DEL_USUARIO
+
+###
+
+### Actualizar un usuario (PATCH) (Reemplaza ID)
+PATCH http://localhost:3000/api/users/ID_DEL_USUARIO
+Content-Type: application/json
+
+{
+  "name": "Alan Modificado",
+  "email": "alanmodificado@example.com",
+  "password": "87654321"
+}
+
+###
+
+### Eliminar usuario (DELETE) (Reemplaza ID)
+DELETE http://localhost:3000/api/users/ID_DEL_USUARIO
