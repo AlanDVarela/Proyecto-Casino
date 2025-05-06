@@ -1,11 +1,11 @@
 ### Obtener todos los usuarios (Solo admin)
-GET http://localhost:3000/api/users
+GET http://localhost:3000/users
 x-auth: admin_auth
 
 ###
 
 ### Registrar nuevo usuario
-POST http://localhost:3000/api/users
+POST http://localhost:3000/users
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 ###
 
 ### Login de usuario (loginUser)
-POST http://localhost:3000/api/users/login
+POST http://localhost:3000/users/login
 Content-Type: application/json
 
 {
@@ -28,12 +28,12 @@ Content-Type: application/json
 ###
 
 ### Obtener un usuario por ID (Reemplaza ID)
-GET http://localhost:3000/api/users/ID_DEL_USUARIO
+GET http://localhost:3000/users/68090daec78d1be4c03f29eb
 
 ###
 
 ### Actualizar un usuario (PATCH) (Reemplaza ID)
-PATCH http://localhost:3000/api/users/ID_DEL_USUARIO
+PATCH http://localhost:3000/users/68090daec78d1be4c03f29eb
 Content-Type: application/json
 
 {
@@ -44,5 +44,5 @@ Content-Type: application/json
 
 ###
 
-### Eliminar usuario (DELETE) (Reemplaza ID)
-DELETE http://localhost:3000/api/users/ID_DEL_USUARIO
+### Eliminar usuario (DELETE) 
+DELETE http://localhost:3000/users/68090daec78d1be4c03f29eb

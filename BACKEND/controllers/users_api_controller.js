@@ -36,7 +36,12 @@ exports.registerUser = async (req, res) => {
         const exists = await User.findOne({ email });
         if (exists) return res.status(400).send("Email already exists");
 
-        const user = new User({ name, email, password });
+        const user = new User({
+            name,
+            email,
+            password,
+            balance: 0 // Se inicializa explícitamente aunque ya sea default
+        });
         await user.save();
 
         const { password: _, ...safeUser } = user.toObject();
@@ -50,9 +55,15 @@ exports.registerUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
     try {
         const updates = req.body;
+
         if (updates.email) {
             const exists = await User.findOne({ email: updates.email });
             if (exists) return res.status(400).send("Email already in use");
+        }
+
+        // Si balance viene definido, validamos que no sea negativo
+        if (updates.balance !== undefined && updates.balance < 0) {
+            return res.status(400).send("Balance cannot be negative");
         }
 
         const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true });

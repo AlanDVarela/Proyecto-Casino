@@ -36,7 +36,9 @@ routerApi.get('/jackpot.html', (req, res) =>
 const userRoutes = require('./users');
 routerApi.use('/users', userRoutes);
 
-
+//Rutas bets
+const betRoutes = require('./bets');
+routerApi.use('/bets', betRoutes);
 
 
 

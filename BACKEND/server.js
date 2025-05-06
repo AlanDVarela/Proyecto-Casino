@@ -8,7 +8,7 @@ const port = 3000;
 
 
 //Mongo
-let mongoConnection = "mongodb+srv://admin:Yosoypro1@myapp.ezop7xc.mongodb.net/MyAppDB";
+let mongoConnection = "mongodb+srv://admin:Yosoypro1@myapp.ezop7xc.mongodb.net/Casino";
 let db = mongoose.connection;
 
 mongoose.set('strictQuery', true); 

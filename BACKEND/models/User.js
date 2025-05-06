@@ -17,10 +17,15 @@ const userSchema = new mongoose.Schema({
         required: [true, "Password cannot be empty"],
         minlength: [8, "Password must be at least 8 characters"]
     },
+    balance: {
+        type: Number,
+        default: 0, // Siempre inicia en 0
+        min: [0, "Balance cannot be negative"] // Opcional: no permitir negativos
+    },
     joined_at: {
         type: Date,
         default: Date.now,
-        immutable: true //
+        immutable: true
     }
 });
 
