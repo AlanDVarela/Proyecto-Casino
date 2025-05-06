@@ -16,11 +16,17 @@ exports.getUsers = async (req, res) => {
     }
 };
 
-// Obtener usuario por ID
+// Obtener usuario por ID (requiere autenticación)
 exports.getUserById = async (req, res) => {
+    const auth = req.headers['x-auth'];
+
     try {
         const user = await User.findById(req.params.id).select('-password');
         if (!user) return res.status(404).send("User not found");
+
+        if (user.password !== auth) {
+            return res.status(401).send("Invalid x-auth password");
+        }
 
         res.json(user);
     } catch (err) {
@@ -28,7 +34,7 @@ exports.getUserById = async (req, res) => {
     }
 };
 
-// Registrar nuevo usuario
+// Registrar nuevo usuario (no requiere autenticación)
 exports.registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -40,7 +46,7 @@ exports.registerUser = async (req, res) => {
             name,
             email,
             password,
-            balance: 0 // Se inicializa explícitamente aunque ya sea default
+            balance: 0
         });
         await user.save();
 
@@ -51,35 +57,52 @@ exports.registerUser = async (req, res) => {
     }
 };
 
-// Actualizar usuario
+// Actualizar usuario (requiere autenticación)
 exports.updateUser = async (req, res) => {
+    const auth = req.headers['x-auth'];
+
     try {
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).send("User not found");
+
+        if (user.password !== auth) {
+            return res.status(401).send("Invalid x-auth password");
+        }
+
         const updates = req.body;
 
         if (updates.email) {
             const exists = await User.findOne({ email: updates.email });
-            if (exists) return res.status(400).send("Email already in use");
+            if (exists && exists.id !== user.id) return res.status(400).send("Email already in use");
         }
 
-        // Si balance viene definido, validamos que no sea negativo
         if (updates.balance !== undefined && updates.balance < 0) {
             return res.status(400).send("Balance cannot be negative");
         }
 
-        const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true });
-        if (!user) return res.status(404).send("User not found");
+        Object.assign(user, updates);
+        await user.save();
 
-        res.json(user);
+        const { password: _, ...safeUser } = user.toObject();
+        res.json(safeUser);
     } catch (err) {
         res.status(500).send(err.message);
     }
 };
 
-// Eliminar usuario
+// Eliminar usuario (requiere autenticación)
 exports.deleteUser = async (req, res) => {
+    const auth = req.headers['x-auth'];
+
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        const user = await User.findById(req.params.id);
         if (!user) return res.status(404).send("User not found");
+
+        if (user.password !== auth) {
+            return res.status(401).send("Invalid x-auth password");
+        }
+
+        await user.deleteOne();
 
         res.json({ message: "User deleted", user });
     } catch (err) {
@@ -87,7 +110,7 @@ exports.deleteUser = async (req, res) => {
     }
 };
 
-// Login simple
+// Login simple (sin autenticación previa)
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
 
@@ -95,7 +118,12 @@ exports.loginUser = async (req, res) => {
         const user = await User.findOne({ email, password });
         if (!user) return res.status(401).send("Invalid credentials");
 
-        res.json(user);
+        const userObj = user.toObject();
+        //userObj.id = user._id;
+        //delete userObj._id;
+        //delete userObj.password;xw
+
+        res.json(userObj);
     } catch (err) {
         res.status(500).send(err.message);
     }

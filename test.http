@@ -27,22 +27,23 @@ Content-Type: application/json
 
 ###
 
-### Obtener un usuario por ID (Reemplaza ID)
-GET http://localhost:3000/users/68090daec78d1be4c03f29eb
+### Obtener un usuario por ID 
+GET http://localhost:3000/users/681a7470b73cd1ea8758b285
 
 ###
 
-### Actualizar un usuario (PATCH) (Reemplaza ID)
-PATCH http://localhost:3000/users/68090daec78d1be4c03f29eb
+### Actualizar un usuario (PATCH) 
+PATCH http://localhost:3000/users/681a7470b73cd1ea8758b285
 Content-Type: application/json
+x-auth: 12345678
 
 {
-  "name": "Alan Modificado",
-  "email": "alanmodificado@example.com",
-  "password": "87654321"
+  "balance": 1800
 }
 
 ###
 
-### Eliminar usuario (DELETE) 
-DELETE http://localhost:3000/users/68090daec78d1be4c03f29eb
+### Eliminar usuario (DELETE) NO BORRAR ES DE PRUEBA SI SIRVE
+DELETE http://localhost:3000/users/681a7470b73cd1ea8758b285
+
+

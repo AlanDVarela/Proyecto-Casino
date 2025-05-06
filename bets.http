@@ -1,0 +1,60 @@
+### Obtener todas las apuestas
+GET http://localhost:3000/bets
+
+###
+
+### Crear apuesta de Ruleta
+POST http://localhost:3000/bets
+Content-Type: application/json
+
+{
+  "userId": "6640ad25fbb0f563142bde6a", 
+  "gameType": "roulette",
+  "betAmount": 100,
+  "result": "win",
+  "payout": 3600,
+  "rouletteNumber": 17
+}
+
+###
+
+### Crear apuesta de Blackjack
+POST http://localhost:3000/bets
+Content-Type: application/json
+
+{
+  "userId": "6640ad25fbb0f563142bde6a",
+  "gameType": "blackjack",
+  "betAmount": 200,
+  "result": "loss",
+  "payout": 0,
+  "blackjackHand": ["10♠", "6♦"]
+}
+
+###
+
+### Crear apuesta de Slots
+POST http://localhost:3000/bets
+Content-Type: application/json
+
+{
+  "userId": "6640ad25fbb0f563142bde6a",
+  "gameType": "slots",
+  "betAmount": 150,
+  "result": "win",
+  "payout": 500,
+  "slotSymbols": ["🍒", "🍒", "🍒"]
+}
+
+###
+
+### Obtener una apuesta por ID 
+GET http://localhost:3000/bets/681a7470b73cd1ea8758b285
+
+###
+
+### Eliminar apuesta 
+DELETE http://localhost:3000/bets/681a7470b73cd1ea8758b285
+
+### Obtener apuestas por usuario
+GET http://localhost:3000/bets/user/6640ad25fbb0f563142bde6a

@@ -16,53 +16,49 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, #004d00 0%, #8b0000 100%); min-height: 100px; padding: 0 30px;">
-            <div class="container-fluid d-flex align-items-center">
-              <a class="navbar-brand d-flex align-items-baseline gap-2" href="home.html">
-                <span>APUE$TA$</span>
-                <span class="brand-777">777</span>
-              </a>
-          
-              <span class="navbar-title mx-auto">CASINO</span>
-          
-              <div class="d-flex align-items-center gap-3 ms-auto">
-                <span class="credits text-white">Créditos Totales: <strong id="totalCredits">$1000</strong></span>
-                <div class="dropdown">
-                  <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    Usuario
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                    <li><a class="dropdown-item" href="#">Perfil</a></li>
-                    <li><a class="dropdown-item" href="#">Configuración</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
-                  </ul>
-                </div>
-              </div>
-          
-              <button class="navbar-toggler ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+        <!-- navbar.html -->
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, #004d00 0%, #8b0000 100%); min-height: 100px; padding: 0 30px;">
+          <div class="container-fluid d-flex align-items-center">
+            <a class="navbar-brand d-flex align-items-baseline gap-2" href="home.html">
+              <span>APUE$TA$</span>
+              <span class="brand-777">777</span>
+            </a>
+            <span class="navbar-title mx-auto">CASINO</span>
+            <div class="d-flex align-items-center gap-3 ms-auto">
+              <span class="credits text-white">Créditos Totales: <strong id="totalCredits">$</strong></span>
+              <button class="btn btn-outline-light" id="loginBtn" data-bs-toggle="modal" data-bs-target="#loginRegisterModal">
+                Iniciar sesión
               </button>
-            </div>
           
-            <div class="collapse navbar-collapse" id="mainNav">
-              <ul class="navbar-nav ms-auto me-4">
-                <li class="nav-item">
-                  <a class="nav-link active" href="home.html">Inicio</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="juegosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Juegos
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="juegosDropdown">
-                    <li><a class="dropdown-item" href="blackjack.html">Blackjack</a></li>
-                    <li><a class="dropdown-item" href="ruleta.html">Ruleta</a></li>
-                    <li><a class="dropdown-item" href="jackpot.html">Jackpot</a></li>
-                  </ul>
-                </li>
-              </ul>
+              
+              <div class="dropdown" id="userDropdownContainer" style="display: none;">
+                <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">Perfil</a></li>
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">Configuración</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item text-danger" href="#" onclick="logout()">Cerrar sesión</a></li>
+                </ul>
+              </div>
             </div>
-          </nav>
+            <button class="navbar-toggler ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          </div>
+          <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto me-4">
+              <li class="nav-item"><a class="nav-link active" href="home.html">Inicio</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="juegosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Juegos</a>
+                <ul class="dropdown-menu" aria-labelledby="juegosDropdown">
+                  <li><a class="dropdown-item" href="blackjack.html">Blackjack</a></li>
+                  <li><a class="dropdown-item" href="ruleta.html">Ruleta</a></li>
+                  <li><a class="dropdown-item" href="jackpot.html">Jackpot</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
     </header>
     <main>
         <h1 class="title mt-5">BIENVENIDO</h1>
@@ -85,7 +81,122 @@
         </div>
       </main>
 
+  <!-- Modales-->
+<!-- Perfil Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header">
+        <h5 class="modal-title" id="profileModalLabel">Perfil de Usuario</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p>Usuario: <strong id="profileUsername">---</strong></p>
+        <p>Balance Actual: <strong id="profileBalance">$0</strong></p>
+        <div class="mb-3">
+          <label for="addCredits" class="form-label">Añadir Créditos</label>
+          <input type="number" class="form-control bg-secondary text-white" id="addCredits" min="0">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-warning" id="addCreditsBtn">Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Configuración Modal -->
+<div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header">
+        <h5 class="modal-title" id="settingsModalLabel">Configuración</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="newUsername" class="form-label">Nuevo Nombre de Usuario</label>
+          <input type="text" class="form-control bg-secondary text-white" id="newUsername" placeholder="">
+        </div>
+        <div class="mb-3">
+          <label for="newEmail" class="form-label">Correo</label>
+          <input type="email" class="form-control bg-secondary text-white" id="newEmail" placeholder="">
+        </div>
+        <div class="mb-3">
+          <label for="newPassword" class="form-label">Nueva Contraseña</label>
+          <input type="password" class="form-control bg-secondary text-white" id="settingsConfirmPassword" placeholder="Confirmar Contraseña">
+        </div>
+        <hr class="dropdown-divider bg-light">
+        <div class="mb-3">
+          <label class="form-label text-danger">Eliminar Perfil</label>
+          <button type="button" class="btn btn-danger w-100" id="deleteProfileBtn">Borrar Perfil</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-warning" id="saveSettingsBtn">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Logout Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Cerrar Sesión</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Estás seguro que deseas cerrar sesión?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="confirmLogoutBtn">Cerrar Sesión</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ <!-- Login  Modal-->
+ <div class="modal fade" id="loginRegisterModal" tabindex="-1" aria-labelledby="loginRegisterModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header">
+        <h5 class="modal-title">Bienvenido al Casino</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Login -->
+        <form id="formLogin">
+          <h4 class="mb-3">Iniciar Sesión</h4>
+          <input type="email" id="loginEmail" class="form-control my-2" placeholder="Email" required>
+          <input type="password" id="loginPassword" class="form-control my-2" placeholder="Contraseña" required>
+          <button type="submit" class="btn btn-success w-100">Ingresar</button>
+          <p class="mt-3">¿No tienes cuenta? <a href="#" onclick="toggleForms(true)">Registrarse</a></p>
+        </form>
+
+        <!-- Register -->
+        <form id="formRegister" style="display:none;">
+          <h4 class="mb-3">Registro</h4>
+          <input type="text" id="registerName" class="form-control my-2" placeholder="Nombre" required>
+          <input type="email" id="registerEmail" class="form-control my-2" placeholder="Email" required>
+          <input type="password" id="registerPassword" class="form-control my-2" placeholder="Contraseña (mínimo 8 caracteres)" required>
+          <input type="password" id="registerConfirmPassword" class="form-control my-2" placeholder="Confirmar Contraseña" required>
+          <button type="submit" class="btn btn-warning w-100">Crear cuenta</button>
+          <p class="mt-3">¿Ya tienes cuenta? <a href="#" onclick="toggleForms(false)">Iniciar sesión</a></p>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../controllers/nav_controller.js"></script>
 </body>
 </html>
