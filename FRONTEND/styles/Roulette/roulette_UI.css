@@ -4,14 +4,9 @@ body {
   background-color: rgb(23, 23, 23);
 }
 
-.main-wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
 /* ----- Areas ----- */
 .top-area {
+  margin-top: 5%;   /* 10% del contenedor padre */
   background-color: #1c1c1c;
   background-image: url('../../assets/img/background-casino.png');
   background-size: 800px;
@@ -402,18 +397,19 @@ td .placed-chip:hover {
 
 
 /*modal*/
-.modal {
+/* ESTADÍSTICAS MODAL PERSONALIZADO */
+#stats-modal {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 9999;
 }
 
-
-.modal-content {
+.custom-stats-modal-content {
   background: rgba(29, 29, 29, 0.932);
   color: white;
   padding: 20px;
@@ -422,9 +418,10 @@ td .placed-chip:hover {
   overflow-y: auto;
   width: 100%;
   max-width: 500px;
+  position: relative;
 }
 
-.modal-content .close {
+.custom-stats-modal-close {
   position: absolute;
   top: 10px; right: 20px;
   font-size: 30px;
@@ -435,6 +432,7 @@ td .placed-chip:hover {
   margin: 5px 0;
   padding: 5px;
   border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .win { background-color: #064420; }

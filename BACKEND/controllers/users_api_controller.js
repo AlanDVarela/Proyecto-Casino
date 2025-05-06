@@ -82,9 +82,7 @@ exports.updateUser = async (req, res) => {
 
         Object.assign(user, updates);
         await user.save();
-
-        const { password: _, ...safeUser } = user.toObject();
-        res.json(safeUser);
+        res.json(user.toObject());
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -121,7 +119,7 @@ exports.loginUser = async (req, res) => {
         const userObj = user.toObject();
         //userObj.id = user._id;
         //delete userObj._id;
-        //delete userObj.password;xw
+        //delete userObj.password;
 
         res.json(userObj);
     } catch (err) {

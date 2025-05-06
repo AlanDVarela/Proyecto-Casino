@@ -161,11 +161,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
                 .then(data => {
                     // Actualizar sessionStorage con el nuevo balance
-                    if (data.user) {
-                        sessionStorage.setItem("user", JSON.stringify(data.user));
-                    } else {
-                        sessionStorage.removeItem("user");
+                    if (data) {
+                        sessionStorage.setItem("user", JSON.stringify(data));
                     }
+
                     document.getElementById('profileBalance').textContent = `$${data.balance}`;
                     document.getElementById('totalCredits').textContent = `$${data.balance}`;
                     document.getElementById('addCredits').value = "";

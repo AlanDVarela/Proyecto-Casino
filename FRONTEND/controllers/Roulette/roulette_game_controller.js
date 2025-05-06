@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       {
          alert("No tienes suficiente balance!")
          return;
-      }
+      } 
 
       balance -= selectedChipValue;
       totalBet += selectedChipValue;
@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+//Update
 function updateUI() {
   document.getElementById("balanceAmount").textContent = `$${balance}`;
   document.getElementById("totalBet").textContent = `$${totalBet}`;
