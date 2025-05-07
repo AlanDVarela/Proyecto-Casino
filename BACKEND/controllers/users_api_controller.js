@@ -49,9 +49,7 @@ exports.registerUser = async (req, res) => {
             balance: 0
         });
         await user.save();
-
-        const { password: _, ...safeUser } = user.toObject();
-        res.status(201).json(safeUser);
+        res.status(201).json(user.toObject());
     } catch (err) {
         res.status(500).send(err.message);
     }

@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            fetch(`/users/${user.id}`, {
+            fetch(`/users/${user._id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

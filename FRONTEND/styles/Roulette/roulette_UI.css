@@ -1,12 +1,11 @@
 body {
-  min-height: 100vh;
   overflow-x: hidden; 
   background-color: rgb(23, 23, 23);
 }
 
 /* ----- Areas ----- */
 .top-area {
-  margin-top: 5%;   /* 10% del contenedor padre */
+  margin-top: 65px;   /* 10% del contenedor padre */
   background-color: #1c1c1c;
   background-image: url('../../assets/img/background-casino.png');
   background-size: 800px;
@@ -16,20 +15,20 @@ body {
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 30px 0;
+  padding: 10px -5px;
   gap: 30px;
   flex-wrap: wrap; 
 }
 
-/*Ruleta ocupa 40% */
 .roulette-section {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 40px; 
-  height: 40vh;
+  height: 38vh;
   background-size: 800px;
   background-blend-mode: overlay;
+  margin-bottom: 20px; 
 }
 
 .roulette-wrapper {
@@ -60,8 +59,8 @@ body {
 .info-wrapper {
   max-width: 180px;
   border-radius: 12px;
-  padding: 10px;
-  font-size: 14px;
+  padding: 8px;
+  font-size: 12px;
   color: white;
 }
 .left-info {
@@ -77,15 +76,19 @@ body {
 /* Apuestas + chips + botones ocupan el resto */
 .bottom-section {
   flex: 1;
-  overflow-y: auto;
+  overflow: hidden;
   background-color: #064420;
  
 }
 
 @media (max-width: 768px) {
   .bottom-section {
-    overflow-y: visible;
+    overflow-y: auto;
   }
+}
+
+.controls {
+  margin-top: -30px;
 }
 
 /* ----- TABLA DE APUESTAS ----- */
@@ -122,16 +125,16 @@ body {
   border-spacing: 0;
   margin: 0 auto;
   table-layout: fixed;
+  margin-top: -10px;
 }
 
 .roulette-table td {
-  width: 45px;
+  width: 50px;
   height: 40px;
-  padding: 0;
   text-align: center;
   vertical-align: middle;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 15px;
   position: relative;
   color: white;
   border: 2.5px solid #bc9c31;
@@ -195,18 +198,19 @@ body {
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
+  margin-bottom: -15px;
 }
 /* Estilo base de todas las fichas */
 .chip {
   position: relative;
-  width: 55px;
-  height: 55px;
+  width: 40px;
+  height: 40px;
   border-radius: 100%;
-  font-size: 15px;
+  font-size: 10px;
   font-weight: bold;
   color: white;
   text-align: center;
-  line-height: 45px;
+  line-height: 30px;
   margin: 4px;
   cursor: pointer;
   z-index: 1;
@@ -220,14 +224,14 @@ td .placed-chip {
 /* Estilo base de todas las fichas */
 td .chip {
   position: relative;
-  width: 45px;
-  height: 45px;
+  width: 35px;
+  height: 35px;
   border-radius: 100%;
-  font-size: 10px;
+  font-size: 8px;
   font-weight: bold;
   color: white;
   text-align: center;
-  line-height: 36px;
+  line-height: 27px;
   margin: 4px;
   z-index: 100;
   border: 5px dashed white;
@@ -308,14 +312,14 @@ td .placed-chip:hover {
 
 /* Título del card */
 #Card h5 {
-  font-size: 24px;
+  font-size: 16px;
   text-align: center;
   margin-bottom: 12px;
   letter-spacing: 1px;
   color: white;
 }
 #Card p{
-  font-size: 20px;
+  font-size: 14px;
 }
 
 /* Scroll horizontal para ganadores solo en pantallas pequeñas */
@@ -365,10 +369,10 @@ td .placed-chip:hover {
 }
 
 .ganador-item {
-  width: 42px;
-  height: 42px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -451,3 +455,6 @@ td .placed-chip:hover {
   padding: 5px;
   border-radius: 5px;
 }
+
+
+

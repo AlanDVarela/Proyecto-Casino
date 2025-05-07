@@ -64,7 +64,7 @@
    <!-- RUEDA CON FONDO OSCURO -->
       <div class="top-area flex-wrap">
         <!-- Panel izquierdo -->
-        <div class="info-wrapper left-info">
+        <div class="info-wrapper left-info mt-5">
           <div id="Card">
             <h5>Balance</h5>
             <p id="balanceAmount">$1000</p>
@@ -76,7 +76,7 @@
         </div>
 
         <!-- Centro: Ruleta -->
-        <div class="roulette-section">
+        <div class="roulette-section mt-5">
           <div class="roulette-wrapper" style="position: relative;">
             <canvas id="rouletteCanvas" width="500" height="500"></canvas>
             <div class="pointer"></div>
@@ -84,7 +84,7 @@
         </div>
 
         <!-- Panel derecho: ganadores -->
-        <div class="info-wrapper right-info">
+        <div class="info-wrapper right-info mt-3">
           <div id="Card">
             <h5>Ganadores</h5>
             <div id="ganadoresList" class="ganadores-scroll"></div>
@@ -94,8 +94,9 @@
 <div class="bottom-section">
     <!-- MESA DE APUESTAS -->
     <div class="table-area">
-      <div class="betting-layout" id="bettingLayout" style="max-width: 90vw;">
-        <table class="roulette-table mt-4">
+      <!-- FICHAS + BOTONES -->
+      <div class="betting-layout" id="bettingLayout" style="max-width: 80vw;">
+        <table class="roulette-table">
           <tbody>
             <tr>
               <td rowspan="3" class="cell green zero-cell" data-name="0">0</td>
@@ -162,26 +163,24 @@
             </tr>
           </tbody>
         </table>
+
+        <div class="controls-area">
+          <div class="chip-bar">
+            <div class="chip" data-value="25">25</div>
+            <div class="chip" data-value="50">50</div>
+            <div class="chip" data-value="100">100</div>
+            <div class="chip" data-value="500">500</div>
+          </div>
+        </div>
+        <div class="controls text-center">
+          <button class="button" id="statsButton">Estadísticas</button>
+          <button id="undoButton">UNDO</button>
+          <button id="resetButton">RESET</button>
+          <button id="spinButton" onclick="spin()">SPIN</button>
+      </div>
+
       </div>
     </div>
-
-    <!-- FICHAS + BOTONES -->
-    <div class="controls-area">
-      <div class="chip-bar">
-        <div class="chip" data-value="25">25</div>
-        <div class="chip" data-value="50">50</div>
-        <div class="chip" data-value="100">100</div>
-        <div class="chip" data-value="500">500</div>
-      </div>
-    </div>
-
-    <div class="controls text-center">
-      <button class="button" id="statsButton">Estadísticas</button>
-      <button id="undoButton">UNDO</button>
-      <button id="resetButton">RESET</button>
-      <button id="spinButton" onclick="spin()">SPIN</button>
-  </div>
-
 </div>
 
 
