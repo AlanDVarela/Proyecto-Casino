@@ -79,6 +79,7 @@ body {
   flex: 1;
   overflow-y: auto;
   background-color: #064420;
+ 
 }
 
 @media (max-width: 768px) {
@@ -89,7 +90,7 @@ body {
 
 /* ----- TABLA DE APUESTAS ----- */
 .table-area {
-  width: 90vw; /* 90% del ancho del viewport */
+  width: 80%; /* 90% del ancho del viewport */
   max-width: 90vw;
   margin: 0 auto;
   display: flex;
@@ -101,6 +102,7 @@ body {
     radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
   background-position: 0 0, 5px 5px;
   background-size: 10px 10px;
+  height: 80%;
 }
 
 @media (max-width: 768px) {
@@ -123,8 +125,8 @@ body {
 }
 
 .roulette-table td {
-  width: 80px;
-  height: 80px;
+  width: 45px;
+  height: 40px;
   padding: 0;
   text-align: center;
   vertical-align: middle;
@@ -398,6 +400,7 @@ td .placed-chip:hover {
 
 /*modal*/
 /* ESTADÍSTICAS MODAL PERSONALIZADO */
+
 #stats-modal {
   position: fixed;
   top: 0; left: 0;
@@ -435,5 +438,16 @@ td .placed-chip:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.win { background-color: #064420; }
-.loss { background-color: #8B0000; }
+.win {
+  background-color: #064420 !important;
+  color: white !important;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.loss {
+  background-color: #8B0000 !important;
+  color: white !important;
+  padding: 5px;
+  border-radius: 5px;
+}
