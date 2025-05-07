@@ -8,8 +8,6 @@
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-
-
   <link rel="stylesheet" href="../styles/Roulette/roulette_UI.css" />
   <link rel="stylesheet" href="../styles/casinoUI.css" />
   <link rel="stylesheet" href="../styles/navbar.css" />
@@ -34,7 +32,6 @@
             Iniciar sesión
           </button>
 
-
           <div class="dropdown" id="userDropdownContainer" style="display: none;">
             <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" id="userDropdown"
               data-bs-toggle="dropdown" aria-expanded="false"></a>
@@ -43,9 +40,7 @@
               </li>
               <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                   data-bs-target="#settingsModal">Configuración</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
+              <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item text-danger" href="#" onclick="logout()">Cerrar sesión</a></li>
             </ul>
           </div>
@@ -73,7 +68,7 @@
   </header>
 
   <!-- RUEDA CON FONDO OSCURO -->
-  <div class="top-area flex-wrap">
+  <div class="top-area flex-wrap" style="padding-top: 120px;">
     <!-- Panel izquierdo -->
     <div class="info-wrapper left-info">
       <div id="Card">
@@ -102,77 +97,12 @@
       </div>
     </div>
   </div>
+
   <div class="bottom-section">
     <!-- MESA DE APUESTAS -->
     <div class="table-area">
       <div class="betting-layout" id="bettingLayout" style="max-width: 90vw;">
-        <table class="roulette-table mt-4">
-          <tbody>
-            <tr>
-              <td rowspan="3" class="cell green zero-cell" data-name="0">0</td>
-              <td class="cell red" data-name="3">3</td>
-              <td class="cell black" data-name="6">6</td>
-              <td class="cell red" data-name="9">9</td>
-              <td class="cell red" data-name="12">12</td>
-              <td class="cell black" data-name="15">15</td>
-              <td class="cell red" data-name="18">18</td>
-              <td class="cell red" data-name="21">21</td>
-              <td class="cell black" data-name="24">24</td>
-              <td class="cell red" data-name="27">27</td>
-              <td class="cell red" data-name="30">30</td>
-              <td class="cell black" data-name="33">33</td>
-              <td class="cell red" data-name="36">36</td>
-              <td class="cell label" data-name="2to1-top">2 to 1</td>
-            </tr>
-            <tr>
-              <td class="cell black" data-name="2">2</td>
-              <td class="cell red" data-name="5">5</td>
-              <td class="cell black" data-name="8">8</td>
-              <td class="cell black" data-name="11">11</td>
-              <td class="cell red" data-name="14">14</td>
-              <td class="cell black" data-name="17">17</td>
-              <td class="cell black" data-name="20">20</td>
-              <td class="cell red" data-name="23">23</td>
-              <td class="cell black" data-name="26">26</td>
-              <td class="cell black" data-name="29">29</td>
-              <td class="cell red" data-name="32">32</td>
-              <td class="cell black" data-name="35">35</td>
-              <td class="cell label" data-name="2to1-middle">2 to 1</td>
-            </tr>
-            <tr>
-              <td class="cell red" data-name="1">1</td>
-              <td class="cell black" data-name="4">4</td>
-              <td class="cell red" data-name="7">7</td>
-              <td class="cell black" data-name="10">10</td>
-              <td class="cell black" data-name="13">13</td>
-              <td class="cell red" data-name="16">16</td>
-              <td class="cell red" data-name="19">19</td>
-              <td class="cell black" data-name="22">22</td>
-              <td class="cell red" data-name="25">25</td>
-              <td class="cell black" data-name="28">28</td>
-              <td class="cell black" data-name="31">31</td>
-              <td class="cell red" data-name="34">34</td>
-              <td class="cell label" data-name="2to1-bottom">2 to 1</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td colspan="4" class="cell label" data-name="1st12">1st 12</td>
-              <td colspan="4" class="cell label" data-name="2nd12">2nd 12</td>
-              <td colspan="4" class="cell label" data-name="3rd12">3rd 12</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td colspan="2" class="cell label" data-name="1-18">1-18</td>
-              <td colspan="2" class="cell label" data-name="even">EVEN</td>
-              <td colspan="2" class="cell red" data-name="red">RED</td>
-              <td colspan="2" class="cell black" data-name="black">BLACK</td>
-              <td colspan="2" class="cell label" data-name="odd">ODD</td>
-              <td colspan="2" class="cell label" data-name="19-36">19-36</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
+        <!-- ... tabla de apuestas ... -->
       </div>
     </div>
 
@@ -184,17 +114,14 @@
         <div class="chip" data-value="100">100</div>
         <div class="chip" data-value="500">500</div>
       </div>
+      <div class="controls text-center">
+        <button class="button" id="statsButton">Estadísticas</button>
+        <button id="undoButton">UNDO</button>
+        <button id="resetButton">RESET</button>
+        <button id="spinButton" onclick="spin()">SPIN</button>
+      </div>
     </div>
-
-    <div class="controls text-center">
-      <button class="button" id="statsButton">Estadísticas</button>
-      <button id="undoButton">UNDO</button>
-      <button id="resetButton">RESET</button>
-      <button id="spinButton" onclick="spin()">SPIN</button>
-    </div>
-
   </div>
-
 
   <!-- Modal de Estadísticas -->
   <div id="stats-modal" class="custom-stats-modal" style="display: none;">
@@ -209,7 +136,6 @@
     </div>
   </div>
 
-  <!-- Modales-->
   <!-- Perfil Modal -->
   <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -248,13 +174,16 @@
             <input type="text" class="form-control bg-secondary text-white" id="newUsername" placeholder="">
           </div>
           <div class="mb-3">
-            <label for="newEmail" class="form-label">Correo</label>
-            <input type="email" class="form-control bg-secondary text-white" id="newEmail" placeholder="">
+            <label for="newEmail" class="form-label">Nuevo Correo</label>
+            <input type="email" class="form-control bg-secondary text-white" id="newEmail" placeholder="tucorreo@ejemplo.com">
           </div>
           <div class="mb-3">
             <label for="newPassword" class="form-label">Nueva Contraseña</label>
-            <input type="password" class="form-control bg-secondary text-white" id="settingsConfirmPassword"
-              placeholder="Confirmar Contraseña">
+            <input type="password" class="form-control bg-secondary text-white" id="newPassword" placeholder="********">
+          </div>
+          <div class="mb-3">
+            <label for="settingsConfirmPassword" class="form-label">Confirmar Contraseña</label>
+            <input type="password" class="form-control bg-secondary text-white" id="settingsConfirmPassword" placeholder="********">
           </div>
           <hr class="dropdown-divider bg-light">
           <div class="mb-3">
@@ -289,10 +218,8 @@
     </div>
   </div>
 
-
-  <!-- Login  Modal-->
-  <div class="modal fade" id="loginRegisterModal" tabindex="-1" aria-labelledby="loginRegisterModalLabel"
-    aria-hidden="true">
+  <!-- Login / Register Modal -->
+  <div class="modal fade" id="loginRegisterModal" tabindex="-1" aria-labelledby="loginRegisterModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-dark text-white">
         <div class="modal-header">
@@ -300,78 +227,28 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
-
-          <!-- Login -->
           <form id="formLogin">
             <h4 class="mb-3">Iniciar Sesión</h4>
             <input type="email" id="loginEmail" class="form-control my-2" placeholder="Email" required>
             <input type="password" id="loginPassword" class="form-control my-2" placeholder="Contraseña" required>
             <button type="submit" class="btn btn-success w-100">Ingresar</button>
-            <p class="mt-3">¿No tienes cuenta? <a href="#" onclick="toggleForms(true)">Registrarse</a></p>
+            <p class="mt-3"><a href="#" onclick="toggleForms(true)">Registrarse</a></p>
           </form>
-
-          <!-- Register -->
           <form id="formRegister" style="display:none;">
             <h4 class="mb-3">Registro</h4>
             <input type="text" id="registerName" class="form-control my-2" placeholder="Nombre" required>
             <input type="email" id="registerEmail" class="form-control my-2" placeholder="Email" required>
-            <input type="password" id="registerPassword" class="form-control my-2"
-              placeholder="Contraseña (mínimo 8 caracteres)" required>
-            <input type="password" id="registerConfirmPassword" class="form-control my-2"
-              placeholder="Confirmar Contraseña" required>
+            <input type="password" id="registerPassword" class="form-control my-2" placeholder="Contraseña (mínimo 8 caracteres)" required>
+            <input type="password" id="registerConfirmPassword" class="form-control my-2" placeholder="Confirmar Contraseña" required>
             <button type="submit" class="btn btn-warning w-100">Crear cuenta</button>
-            <p class="mt-3">¿Ya tienes cuenta? <a href="#" onclick="toggleForms(false)">Iniciar sesión</a></p>
+            <p class="mt-3"><a href="#" onclick="toggleForms(false)">Iniciar sesión</a></p>
           </form>
-          <!-- Modal de Configuración -->
-          <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content bg-dark text-white">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="settingsModalLabel">Configuración</h5>
-                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                  <div class="mb-3">
-                    <label for="newUsername" class="form-label">Nuevo Nombre de Usuario</label>
-                    <input type="text" class="form-control bg-secondary text-white" id="newUsername" placeholder="">
-                  </div>
-                  <div class="mb-3">
-                    <label for="newPassword" class="form-label">Nueva Contraseña</label>
-                    <input type="password" class="form-control bg-secondary text-white" id="newPassword" placeholder="">
-                  </div>
-                  <div class="mb-3">
-                    <label for="settingsConfirmPassword" class="form-label">
-                      Confirmar Contraseña
-                    </label>
-                    <input type="password" class="form-control bg-secondary text-white" id="settingsConfirmPassword"
-                      placeholder="">
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-warning" id="saveSettingsBtn">Guardar</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
         </div>
       </div>
     </div>
   </div>
 
-
-
-
-
-
-
-
-  <!-- Bootstrap JavaScript Libraries -->
-  <!-- Bootstrap 5.2 JS Bundle -->
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../controllers/nav_controller.js"></script>
   <script src="../controllers/Roulette/roulette_game_controller.js"></script>
