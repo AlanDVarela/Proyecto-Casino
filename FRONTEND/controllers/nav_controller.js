@@ -14,19 +14,11 @@ function update() {
         userDropdown.style.display = "none";
         totalCredits.textContent = "$1000";
     } else {
-        console.log("agregando balance");
+        //console.log("agregando balance");
         loginBtn.style.display = "none";
         userDropdown.style.display = "block";
         userDropdownName.textContent = user.name;
         totalCredits.textContent = `$${user.balance}`;
-    }
-    const currentPage = window.location.pathname.split("/").pop();
-
-    if (currentPage === "ruleta.html") {
-        console.log("ruleta");
-        if (typeof updateUI === "function") {
-            updateUI();
-        }
     }
 }
 //Logout

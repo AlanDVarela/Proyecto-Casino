@@ -258,22 +258,25 @@ function mostrarGanadores(n) {
   const user = getUser();
 
   if (!user) {
-      ganadores.unshift(n);
-      if (ganadores.length > 5) ganadores.pop();
+    if (n !== undefined && n !== null) {
+        ganadores.unshift(n);
+    }
 
-      const container = document.getElementById("ganadoresList");
-      if (!container) return;
+    if (ganadores.length > 5) ganadores.pop();
 
-      container.innerHTML = "";
+    const container = document.getElementById("ganadoresList");
+    if (!container) return;
 
-      ganadores.forEach(num => {
-          const item = document.createElement("div");
-          const colorClass = num === 0 ? "green" : (numRed.includes(num) ? "red" : "black");
-          item.className = `ganador-item ${colorClass}`;
-          item.innerHTML = `<span class="number">${num}</span>`;
-          container.appendChild(item);
-      });
-  } 
+    container.innerHTML = "";
+
+    ganadores.forEach(num => {
+        const item = document.createElement("div");
+        const colorClass = num === 0 ? "green" : (numRed.includes(num) ? "red" : "black");
+        item.className = `ganador-item ${colorClass}`;
+        item.innerHTML = `<span class="number">${num}</span>`;
+        container.appendChild(item);
+    });
+}
   else 
   {
       
@@ -283,8 +286,15 @@ function mostrarGanadores(n) {
 
 
 
-document.getElementById("statsButton").addEventListener("click", () => {
-  updateStatsModal();
+document.getElementById("statsButton").addEventListener("click", async () => {
+  const user = getUser();
+
+  if (!user) {
+      alert("Debes iniciar sesión para ver las estadísticas.");
+      return;
+  }
+
+  await updateStatsModal();
   document.getElementById("stats-modal").style.display = "flex";
 });
 
@@ -315,40 +325,37 @@ async function fetchUserBets() {
   }
 }
 
-let gameStats = [];
 
 async function updateStatsModal() {
   const statsList = document.getElementById("statsList");
   const user = getUser();
   statsList.innerHTML = "";
 
-  let bets = [];
-
-  if (user) {
-      // Obtener apuestas del backend
-      bets = await fetchUserBets();
-  } else {
-      // Invitado → usar local
-      bets = gameStats;
+  //Si es invitado, salir
+  if (!user) {
+      return;
   }
+
+  // Si es usuario, obtener apuestas del backend
+  const bets = await fetchUserBets();
 
   const wins = bets.filter(b => b.result === "win");
   const losses = bets.filter(b => b.result === "loss");
 
   bets.forEach((b, index) => {
-    const li = document.createElement("li");
+      const li = document.createElement("li");
 
-    const result = (b.result ?? "").toLowerCase();
+      const result = (b.result ?? "").toLowerCase();
 
-    if (result === "win") {
-        li.classList.add("win");
-    } else {
-        li.classList.add("loss");
-    }
+      if (result === "win") {
+          li.classList.add("win");
+      } else {
+          li.classList.add("loss");
+      }
 
-    li.textContent = `${index + 1}. ${result === "win" ? "Ganaste" : "Perdiste"} $${Math.abs(b.amount ?? b.payout)} - Número: ${b.number ?? b.rouletteNumber}`;
-    statsList.appendChild(li);
-});
+      li.textContent = `${index + 1}. ${result === "win" ? "Ganaste" : "Perdiste"} $${Math.abs(b.amount ?? b.payout)} - Número: ${b.number ?? b.rouletteNumber}`;
+      statsList.appendChild(li);
+  });
 
   document.getElementById("ratio").textContent = `${wins.length} / ${losses.length}`;
   document.getElementById("netResult").textContent = bets.reduce((acc, b) => acc + (b.amount ?? (b.payout - b.betAmount)), 0);
