@@ -47,7 +47,7 @@ function getUser() {
     updateBalanceUI();
   
     try {
-      const res = await fetch(`/api/users/${user._id}`, {
+      const res = await fetch(`/users/${user._id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ balance: newBalance })
