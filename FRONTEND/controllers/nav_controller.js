@@ -25,6 +25,7 @@ function update() {
 }
 
 // Cerrar sesión
+delete window.logout;
 function logout() {
     sessionStorage.clear();
     update();
@@ -126,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Añadir créditos
     const addCreditsBtn = document.getElementById('addCreditsBtn');
     if (addCreditsBtn) {
-        addCreditsBtn.addEventListener('click', () => {
+        addCreditsBtn.addEventListener('click', async () => {
             const creditsToAdd = parseInt(document.getElementById('addCredits').value, 10);
             if (isNaN(creditsToAdd) || creditsToAdd <= 0) {
                 alert("Ingresa un valor válido");
@@ -138,29 +139,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             const newBalance = user.balance + creditsToAdd;
-            fetch(`/users/${user._id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth': user.password
-                },
-                body: JSON.stringify({ balance: newBalance })
-            })
-            .then(async res => {
+            try {
+                const res = await fetch(`/users/${user._id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth': user.password
+                    },
+                    body: JSON.stringify({ balance: newBalance })
+                });
                 if (!res.ok) throw new Error(await res.text());
-                return res.json();
-            })
-            .then(updatedUser => {
+                const updatedUser = await res.json();
                 sessionStorage.setItem("user", JSON.stringify(updatedUser));
                 document.getElementById('profileBalance').textContent = `$${updatedUser.balance}`;
                 document.getElementById('totalCredits').textContent = `$${updatedUser.balance}`;
                 document.getElementById('addCredits').value = "";
                 alert("Créditos añadidos correctamente!");
-            })
-            .catch(err => {
+            } catch (err) {
                 console.error(err);
                 alert("Error al añadir créditos");
-            });
+            }
         });
     }
 
@@ -170,7 +168,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (settingsModalEl) {
         settingsModalEl.addEventListener('show.bs.modal', () => {
             const user = JSON.parse(sessionStorage.getItem("user"));
+            // Rellenar placeholders
             document.getElementById('newUsername').placeholder = user?.name || '';
+            document.getElementById('newEmail').placeholder = user?.email || '';
             document.getElementById('newPassword').placeholder = "********";
             document.getElementById('settingsConfirmPassword').placeholder = "********";
         });
@@ -179,44 +179,71 @@ document.addEventListener("DOMContentLoaded", () => {
     // Guardar configuración
     const saveSettingsBtn = document.getElementById("saveSettingsBtn");
     if (saveSettingsBtn && settingsModal) {
-        saveSettingsBtn.addEventListener("click", () => {
+        saveSettingsBtn.addEventListener("click", async () => {
             const user = JSON.parse(sessionStorage.getItem("user"));
             const newName = document.getElementById("newUsername").value.trim();
+            const newEmail = document.getElementById("newEmail").value.trim();
             const newPassword = document.getElementById("newPassword").value.trim();
             const confirmPassword = document.getElementById("settingsConfirmPassword").value.trim();
+
             if (newPassword && newPassword !== confirmPassword) {
                 alert("Las contraseñas no coinciden");
                 return;
             }
+
             const updates = {};
             if (newName) updates.name = newName;
+            if (newEmail) updates.email = newEmail;
             if (newPassword) updates.password = newPassword;
+
             if (!Object.keys(updates).length) {
                 alert("No se realizaron cambios.");
                 return;
             }
-            fetch(`/users/${user._id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth': user.password
-                },
-                body: JSON.stringify(updates)
-            })
-            .then(res => {
-                if (!res.ok) throw new Error("Error al actualizar");
-                return res.json();
-            })
-            .then(updatedUser => {
+
+            try {
+                const res = await fetch(`/users/${user._id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth': user.password
+                    },
+                    body: JSON.stringify(updates)
+                });
+                if (!res.ok) throw new Error(await res.text());
+                const updatedUser = await res.json();
                 sessionStorage.setItem("user", JSON.stringify(updatedUser));
                 settingsModal.hide();
                 update();
                 alert("Datos actualizados");
-            })
-            .catch(err => {
+            } catch (err) {
                 console.error(err);
                 alert("Error al actualizar");
-            });
+            }
+        });
+    }
+
+    // Eliminar perfil
+    const deleteProfileBtn = document.getElementById('deleteProfileBtn');
+    if (deleteProfileBtn) {
+        deleteProfileBtn.addEventListener('click', async () => {
+            if (!confirm("¿Estás seguro que deseas eliminar tu perfil? Esta acción es irreversible.")) return;
+            const user = JSON.parse(sessionStorage.getItem("user"));
+            try {
+                const res = await fetch(`/users/${user._id}`, {
+                    method: 'DELETE',
+                    headers: { 'x-auth': user.password }
+                });
+                if (!res.ok) throw new Error(await res.text());
+                sessionStorage.clear();
+                settingsModal && settingsModal.hide();
+                update();
+                alert("Perfil eliminado correctamente.");
+                location.href = 'home.html';
+            } catch (err) {
+                console.error(err);
+                alert("Error al eliminar perfil");
+            }
         });
     }
 });
