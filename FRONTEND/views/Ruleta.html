@@ -222,40 +222,56 @@
   </div>
 </div>
 
-<!-- Configuración Modal -->
-<div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content bg-dark text-white">
-      <div class="modal-header">
-        <h5 class="modal-title" id="settingsModalLabel">Configuración</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="newUsername" class="form-label">Nuevo Nombre de Usuario</label>
-          <input type="text" class="form-control bg-secondary text-white" id="newUsername" placeholder="">
-        </div>
-        <div class="mb-3">
-          <label for="newEmail" class="form-label">Correo</label>
-          <input type="email" class="form-control bg-secondary text-white" id="newEmail" placeholder="">
-        </div>
-        <div class="mb-3">
-          <label for="newPassword" class="form-label">Nueva Contraseña</label>
-          <input type="password" class="form-control bg-secondary text-white" id="settingsConfirmPassword" placeholder="Confirmar Contraseña">
-        </div>
-        <hr class="dropdown-divider bg-light">
-        <div class="mb-3">
-          <label class="form-label text-danger">Eliminar Perfil</label>
-          <button type="button" class="btn btn-danger w-100" id="deleteProfileBtn">Borrar Perfil</button>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-warning" id="saveSettingsBtn">Guardar</button>
-      </div>
-    </div>
-  </div>
+<!-- ------- Modal de Configuración ------- -->
+<div class="modal fade" id="settingsModal" tabindex="-1"
+aria-labelledby="settingsModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content bg-dark text-white">
+ <div class="modal-header">
+   <h5 class="modal-title" id="settingsModalLabel">Configuración</h5>
+   <button type="button" class="btn-close btn-close-white"
+           data-bs-dismiss="modal" aria-label="Cerrar"></button>
+ </div>
+ <div class="modal-body">
+   <div class="mb-3">
+     <label for="newUsername" class="form-label">Nuevo Nombre de Usuario</label>
+     <input type="text" class="form-control bg-secondary text-white"
+            id="newUsername" placeholder="">
+   </div>
+   <div class="mb-3">
+     <label for="newEmail" class="form-label">Correo</label>
+     <input type="email" class="form-control bg-secondary text-white"
+            id="newEmail" placeholder="">
+   </div>
+   <div class="mb-3">
+     <label for="newPassword" class="form-label">Nueva Contraseña</label>
+     <input type="password" class="form-control bg-secondary text-white"
+            id="newPassword" placeholder="">
+   </div>
+   <div class="mb-3">
+     <label for="settingsConfirmPassword" class="form-label">
+       Confirmar Contraseña
+     </label>
+     <input type="password" class="form-control bg-secondary text-white"
+            id="settingsConfirmPassword" placeholder="">
+   </div>
+   <hr class="dropdown-divider bg-light">
+   <div class="mb-3">
+     <label class="form-label text-danger">Eliminar Perfil</label>
+     <button type="button" class="btn btn-danger w-100"
+             id="deleteProfileBtn">Borrar Perfil</button>
+   </div>
+ </div>
+ <div class="modal-footer">
+   <button type="button" class="btn btn-outline-light"
+           data-bs-dismiss="modal">Cancelar</button>
+   <button type="button" class="btn btn-warning"
+           id="saveSettingsBtn">Guardar</button>
+ </div>
 </div>
+</div>
+</div>
+
 
 <!-- Logout Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
