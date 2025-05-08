@@ -56,12 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".chip").forEach((chip) => {
         chip.addEventListener("click", () => {
             if (chip.classList.contains("selected")) {
-                // Ya estaba seleccionada → deseleccionarla
                 chip.classList.remove("selected");
                 selectedChipValue = 0;
                 selectedChipColor = '';
             } else {
-                // No estaba seleccionada → deseleccionar todas y seleccionar esta
                 document.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
                 chip.classList.add("selected");
                 selectedChipValue = parseInt(chip.dataset.value);
@@ -159,6 +157,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     mostrarGanadores();
+});
+
+document.addEventListener('balanceUpdated', (e) => {
+    betBalance = e.detail.balance;
+    updateUI();
 });
 
 function updateUI() {

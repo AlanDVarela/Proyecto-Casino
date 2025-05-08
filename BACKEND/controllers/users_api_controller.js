@@ -19,17 +19,16 @@ exports.getUsers = async (req, res) => {
 // Obtener usuario por ID (requiere autenticación)
 exports.getUserById = async (req, res) => {
     const auth = req.headers['x-auth'];
-
     try {
-        const user = await User.findById(req.params.id).select('-password');
+        const user = await User.findById(req.params.id);
         if (!user) return res.status(404).send("User not found");
 
         if (user.password !== auth) {
             return res.status(401).send("Invalid x-auth password");
         }
-
-        res.json(user);
-    } catch (err) {
+        res.json(user.toObject());
+    } 
+    catch (err) {
         res.status(500).send(err.message);
     }
 };

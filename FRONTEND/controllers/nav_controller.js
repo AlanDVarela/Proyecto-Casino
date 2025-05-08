@@ -59,6 +59,21 @@ function logout() {
     location.reload();
 }
 
+function showLogoutConfirm() {
+    const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+    modal.show();
+
+    const confirmButton = document.getElementById("confirmLogoutBtn");
+
+    confirmButton.replaceWith(confirmButton.cloneNode(true));
+    const newConfirmButton = document.getElementById("confirmLogoutBtn");
+
+    newConfirmButton.addEventListener("click", () => {
+        modal.hide();
+        logout();  
+    });
+}
+
 //Funcino de modales de login y registrar
 function toggleForms(showRegister = false) {
     const loginForm = document.getElementById("formLogin");
@@ -116,6 +131,13 @@ document.getElementById("formRegister").addEventListener("submit", async (e) => 
         return;
     }
 
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("Ingresa un correo electrónico válido");
+        return;
+    }
+
     if (password.length < 8) {
         alert("La contraseña debe tener al menos 8 caracteres");
         return;
@@ -153,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
       profileModal.addEventListener('show.bs.modal', () => {
         const user = JSON.parse(sessionStorage.getItem("user"));
         document.getElementById('profileUsername').textContent = user?.name || 'Invitado';
-        document.getElementById('profileBalance').textContent = user ? `$${user.balance}` : "$0";
+        document.getElementById('profileBalance').textContent = user ? `${formatMoney(user.balance)}` : "$0";
       });
     }
 
@@ -198,10 +220,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (data) {
                         sessionStorage.setItem("user", JSON.stringify(data));
                     }
-
-                    document.getElementById('profileBalance').textContent = `$${data.balance}`;
-                    document.getElementById('totalCredits').textContent = `$${data.balance}`;
+                
+                    document.getElementById('profileBalance').textContent = formatMoney(data.balance);
+                    document.getElementById('totalCredits').textContent = formatMoney(data.balance);
                     document.getElementById('addCredits').value = "";
+                    document.dispatchEvent(new CustomEvent('balanceUpdated', { detail: { balance: newBalance } }));
                     alert("Créditos añadidos correctamente!");
                 })
                 .catch(err => {
@@ -214,36 +237,96 @@ document.addEventListener("DOMContentLoaded", () => {
     //Modal configuracion
     const settingsModal = document.getElementById('settingsModal');
     if (settingsModal) {
-      settingsModal.addEventListener('show.bs.modal', () => {
-        const user = JSON.parse(sessionStorage.getItem("user"));
+    settingsModal.addEventListener('show.bs.modal', () => {
+        const user = getUser();
+        if (!user) return;
 
-        document.getElementById('newUsername').placeholder = user?.name || '';
-        document.getElementById('newPassword').placeholder = "********";
-        document.getElementById('settingsConfirmPassword').placeholder = "********";
-      });
+        fetch(`/users/${user._id}`, {
+            method: "GET",
+            headers: {
+                'x-auth': user.password
+            }
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("Error al obtener datos del usuario.");
+            return res.json();
+        })
+        .then(serverUser => {
+            // Limpiar valores anteriores (esto es lo que hace que no se quede lo que se había escrito antes)
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newEmail').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('settingsConfirmPassword').value = '';
+
+            // Establecer placeholders
+            document.getElementById('newUsername').placeholder = serverUser.name;
+            document.getElementById('newEmail').placeholder = serverUser.email;
+            document.getElementById('newPassword').placeholder = "********";
+            document.getElementById('settingsConfirmPassword').placeholder = "********";
+        })
+        .catch(err => {
+            console.error("Error al cargar el perfil:", err);
+            alert("No se pudieron cargar los datos del perfil.");
+        });
+    });
     }
 
     const saveSettingsBtn = document.getElementById("saveSettingsBtn");
     if (saveSettingsBtn) {
-        saveSettingsBtn.addEventListener("click", () => {
+        saveSettingsBtn.addEventListener("click", async () => {
             const user = JSON.parse(sessionStorage.getItem("user"));
             const newName = document.getElementById("newUsername").value.trim();
+            const newEmail = document.getElementById("newEmail").value.trim();
             const newPassword = document.getElementById("newPassword").value.trim();
             const confirmPassword = document.getElementById("settingsConfirmPassword").value.trim();
 
-            if (newPassword && newPassword !== confirmPassword) {
-                alert("Las contraseñas no coinciden");
+            // Validar email (formato)
+            if (newEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+                alert("El correo no es válido.");
                 return;
+            }
+
+            // Validar contraseña (longitud y coincidencia)
+            if (newPassword) {
+                if (newPassword.length < 8) {
+                    alert("La contraseña debe tener al menos 8 caracteres.");
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    alert("Las contraseñas no coinciden.");
+                    return;
+                }
+            }
+
+            // Validar si el correo ya existe (solo si se ingresó uno nuevo diferente al actual)
+            if (newEmail && newEmail !== user.email) {
+                const emailCheck = await fetch(`/users?email=${encodeURIComponent(newEmail)}`, {
+                    headers: { 'x-auth': "admin_auth" }  // solo admin puede acceder (o deberías hacer un endpoint específico para validación)
+                });
+
+                if (emailCheck.ok) {
+                    const users = await emailCheck.json();
+                    const exists = users.some(u => u.email === newEmail);
+
+                    if (exists) {
+                        alert("Este correo ya está registrado.");
+                        return;
+                    }
+                }
             }
 
             const updates = {};
             if (newName) updates.name = newName;
+            if (newEmail) updates.email = newEmail;
             if (newPassword) updates.password = newPassword;
 
             if (Object.keys(updates).length === 0) {
                 alert("No se realizaron cambios.");
                 return;
             }
+
+            const confirmChange = confirm("¿Estás seguro de que quieres guardar estos cambios en tu perfil?");
+            if (!confirmChange) return;
 
             fetch(`/users/${user._id}`, {
                 method: 'PATCH',
@@ -253,19 +336,95 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 body: JSON.stringify(updates)
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error("Error al actualizar los datos.");
+                return res.json();
+            })
             .then(updatedUser => {
                 sessionStorage.setItem("user", JSON.stringify(updatedUser));
-                alert("Datos actualizados");
+                alert("Datos actualizados correctamente.");
                 update();
             })
             .catch(err => {
                 console.error(err);
-                alert("Error al actualizar");
+                alert("Error al actualizar los datos.");
             });
+            const modal = bootstrap.Modal.getInstance(settingsModal);
+            modal.hide();       
         });
     }
 });
+
+
+const deleteProfileBtn = document.getElementById("deleteProfileBtn");
+if (deleteProfileBtn) {
+    deleteProfileBtn.addEventListener("click", () => {
+        const user = getUser();
+        if (!user) return;
+
+        // Pedir confirmación
+        const confirmDelete = confirm("¿Estás seguro que quieres eliminar tu perfil? Esta acción es irreversible.");
+        if (!confirmDelete) return;
+
+        // Pedir contraseña para confirmar
+        const password = prompt("Ingresa tu contraseña para confirmar:");
+
+        if (!password) {
+            alert("Debes ingresar la contraseña para eliminar tu perfil.");
+            return;
+        }
+
+        if (password !== user.password) {
+            alert("Contraseña incorrecta. No se pudo eliminar el perfil.");
+            return;
+        }
+
+        // Enviar solicitud de eliminación
+        fetch(`/users/${user._id}`, {
+            method: "DELETE",
+            headers: {
+                "x-auth": user.password
+            }
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("Error al eliminar el perfil.");
+            return res.json();
+        })
+        .then(() => {
+            alert("Perfil eliminado correctamente.");
+            sessionStorage.removeItem("user");
+            window.location.reload(); // O redireccionar a login o home
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Ocurrió un error al eliminar tu perfil.");
+        });
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Inicializar al cargar
 document.addEventListener("DOMContentLoaded", () => {
@@ -280,4 +439,14 @@ function formatMoney(value) {
         currency: 'MXN',
         minimumFractionDigits: 0
     });
+}
+
+
+
+
+
+//Funcion user
+function getUser() {
+    const userStr = sessionStorage.getItem("user");
+    return userStr ? JSON.parse(userStr) : null;
 }
