@@ -45,3 +45,9 @@ button:active {
 }
 
 
+
+button.disabled {
+    background-color: #555 !important;
+    color: #aaa !important;
+    cursor: not-allowed;
+}

@@ -147,6 +147,17 @@ body {
   }
 }
 
+
+td.cell {
+  user-select: none;
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
 .roulette-table td:empty {
   border: none;
   background: transparent;
@@ -276,6 +287,12 @@ td .chip:hover,
 td .placed-chip:hover {
   transform: none !important;
   cursor: pointer;
+}
+
+.chip.selected {
+  transform: scale(1.4);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /*Ganadores*/

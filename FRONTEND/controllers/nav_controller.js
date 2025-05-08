@@ -1,3 +1,28 @@
+// Declaración GLOBAL
+function initGuestBalance() {
+    if (!localStorage.getItem("guestBalance")) {
+        localStorage.setItem("guestBalance", "1000");
+    }
+    return parseInt(localStorage.getItem("guestBalance"));
+}
+
+let guestStorage = initGuestBalance();
+
+
+function getCurrentBalance() {
+    const userStr = sessionStorage.getItem("user");
+    const user = userStr ? JSON.parse(userStr) : null;
+
+    if (user) return user.balance;
+
+    return guestStorage;
+}
+
+function clearGuestBalance() {
+    localStorage.removeItem("guestBalance");
+    guestStorage = 0;
+}
+
 function update() {
     const userStr = sessionStorage.getItem("user");
     const user = userStr ? JSON.parse(userStr) : null;
@@ -9,21 +34,27 @@ function update() {
 
     if (!loginBtn || !userDropdown || !userDropdownName || !totalCredits) return;
 
+    const balanceFormatted = getCurrentBalance().toLocaleString('es-MX', { 
+        style: 'currency', 
+        currency: 'MXN', 
+        minimumFractionDigits: 0 
+    });
+
     if (!user) {
         loginBtn.style.display = "block";
         userDropdown.style.display = "none";
-        totalCredits.textContent = "$1000";
+        totalCredits.textContent = balanceFormatted;
     } else {
-        //console.log("agregando balance");
         loginBtn.style.display = "none";
         userDropdown.style.display = "block";
         userDropdownName.textContent = user.name;
-        totalCredits.textContent = `$${user.balance}`;
+        totalCredits.textContent = balanceFormatted;
     }
 }
 //Logout
 function logout() {
     sessionStorage.clear();
+    clearGuestBalance();
     update();
     location.reload();
 }
@@ -62,6 +93,7 @@ document.getElementById("formLogin").addEventListener("submit", async (e) => {
     const user = await res.json();
     if (user) {
         sessionStorage.setItem("user", JSON.stringify(user));
+        clearGuestBalance();
     } else {
         sessionStorage.removeItem("user");
     }
@@ -107,6 +139,7 @@ document.getElementById("formRegister").addEventListener("submit", async (e) => 
 
     const user = await res.json();
     sessionStorage.setItem("user", JSON.stringify(user));
+    localStorage.removeItem("guestBalance"); //Borrar balance guest
     bootstrap.Modal.getInstance(document.getElementById("loginRegisterModal")).hide();
     update();
     location.reload();
@@ -238,3 +271,13 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     update();
 });
+
+
+
+function formatMoney(value) {
+    return value.toLocaleString('es-MX', {
+        style: 'currency',
+        currency: 'MXN',
+        minimumFractionDigits: 0
+    });
+}

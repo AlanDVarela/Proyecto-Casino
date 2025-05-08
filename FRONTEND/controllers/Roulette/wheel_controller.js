@@ -140,7 +140,7 @@ function spin() {
   winnerIndex = null; // Limpiar ganador anterior
   if (blinkInterval) clearInterval(blinkInterval); // Detener parpadeo si hay
   blinkState = false;
-
+  
   maxRotation = 360 * 2 + Math.random() * 360;
   currentDeg = 0;
   pause = false;

@@ -3,26 +3,30 @@ let selectedChipValue = 0;
 let selectedChipColor = '';
 let totalBet = 0;
 let winnings = 0;
-let betBalance = 0;
+let betBalance = getCurrentBalance();
 let placedBets = {};
 let chipCounter = 0;
 let placedChipsStack = [];
+let lastTotalBet = 0;
 
 const numRed = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
 const blackNumbers = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35];
 
+
+//Funciones auxiliarias
 function getUser() {
     const userStr = sessionStorage.getItem("user");
     return userStr ? JSON.parse(userStr) : null;
 }
 
+//Juego
 document.addEventListener("DOMContentLoaded", () => {
     const user = getUser();
 
     if (user) {
         betBalance = user.balance;
     } else {
-        betBalance = 1000; // Invitado
+        betBalance = initGuestBalance();
     }
 
     updateUI();
@@ -30,10 +34,16 @@ document.addEventListener("DOMContentLoaded", () => {
     window.onRouletteWinner = (winner) => {
         if (!winner) return;
         processWinner(winner);
-        enableSpinButton();
+        updateSpinButtonState();
+        setChipsDisabled(false); 
     };
 
     document.getElementById("spinButton")?.addEventListener("click", () => {
+        document.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
+        selectedChipValue = 0;
+        setChipsDisabled(true); 
+        
+        //chip.classList.add("disabled");
         if (pause) {
             spin();
             disableSpinButton();
@@ -45,49 +55,122 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll(".chip").forEach((chip) => {
         chip.addEventListener("click", () => {
-            selectedChipValue = parseInt(chip.dataset.value);
-            selectedChipColor = window.getComputedStyle(chip).backgroundColor;
+            if (chip.classList.contains("selected")) {
+                // Ya estaba seleccionada → deseleccionarla
+                chip.classList.remove("selected");
+                selectedChipValue = 0;
+                selectedChipColor = '';
+            } else {
+                // No estaba seleccionada → deseleccionar todas y seleccionar esta
+                document.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
+                chip.classList.add("selected");
+                selectedChipValue = parseInt(chip.dataset.value);
+                selectedChipColor = window.getComputedStyle(chip).backgroundColor;
+            }
+        });
+
+    // DRAG AND DROP
+
+    chip.addEventListener("mousedown", (e) => {
+        e.preventDefault(); // Previene que seleccione texto
+        document.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
+        const selectedValue = parseInt(chip.dataset.value);
+        const chipColor = window.getComputedStyle(chip).backgroundColor;
+
+        const floatingChip = document.createElement("div");
+        floatingChip.classList.add("chip", "floating-chip");
+        floatingChip.textContent = selectedValue;
+        floatingChip.style.position = "absolute";
+        floatingChip.style.zIndex = 9999;
+        floatingChip.style.background = chipColor;
+        floatingChip.style.pointerEvents = "none";
+        document.body.appendChild(floatingChip);
+
+        function moveChip(e) {
+            floatingChip.style.left = `${e.pageX - 20}px`;
+            floatingChip.style.top = `${e.pageY - 20}px`;
+        }
+
+        document.addEventListener("mousemove", moveChip);
+
+        document.addEventListener("mouseup", function mouseUp(e) 
+        {
+            document.removeEventListener("mousemove", moveChip);
+            document.removeEventListener("mouseup", mouseUp);
+            floatingChip.remove();
+
+            const cell = document.elementFromPoint(e.clientX, e.clientY)?.closest("td.cell");
+            if (cell) {
+
+                if (!canGuestPlay()) return;
+
+                const name = cell.dataset.name;
+                if (!name) return;
+
+                if (betBalance < selectedValue) {
+                    alert("No tienes suficiente balance!");
+                    return;
+                }
+
+                betBalance -= selectedValue;
+                totalBet += selectedValue;
+                placedBets[name] = (placedBets[name] || 0) + selectedValue;
+
+                const placedChip = document.createElement("div");
+                placedChip.classList.add("chip", "placed-chip");
+                placedChip.textContent = selectedValue;
+                placedChip.style.position = "absolute";
+                placedChip.style.zIndex = 100 + chipCounter++;
+                placedChip.style.background = chipColor;
+                placedChip.style.top = `${cell.clientHeight / 2 - 12 + Math.floor(Math.random() * 8 - 4)}px`;
+                placedChip.style.left = `${cell.clientWidth / 2 - 12 + Math.floor(Math.random() * 8 - 4)}px`;
+                cell.appendChild(placedChip);
+
+                placedChipsStack.push({ chip: placedChip, cell, value: selectedValue, name });
+                updateUI();
+            }
         });
     });
-
+    // CLICK EN TABLA
+    document.querySelectorAll("td.cell").forEach((cell) => {
+        // Primero eliminar cualquier listener anterior
+        cell.replaceWith(cell.cloneNode(true));
+    });
+    
     document.querySelectorAll("td.cell").forEach((cell) => {
         cell.addEventListener("click", () => {
+            if (!canGuestPlay()) return;
+    
             const name = cell.dataset.name;
             if (!name || selectedChipValue === 0) return;
-
+    
             if (betBalance < selectedChipValue) {
                 alert("No tienes suficiente balance!");
                 return;
             }
-
-            betBalance -= selectedChipValue;
-            totalBet += selectedChipValue;
-            placedBets[name] = (placedBets[name] || 0) + selectedChipValue;
-
-            const chip = document.createElement("div");
-            chip.classList.add("chip", "placed-chip");
-            chip.textContent = selectedChipValue;
-            chip.style.position = "absolute";
-            chip.style.zIndex = 100 + chipCounter++;
-            chip.style.background = selectedChipColor;
-            chip.style.top = `${cell.clientHeight / 2 - 12 + Math.floor(Math.random() * 8 - 4)}px`;
-            chip.style.left = `${cell.clientWidth / 2 - 12 + Math.floor(Math.random() * 8 - 4)}px`;
-            cell.appendChild(chip);
-
-            placedChipsStack.push({ chip, cell, value: selectedChipValue, name });
-            updateUI();
+    
+            placeBet(cell, selectedChipValue, selectedChipColor);
         });
     });
+
+
+
+
+    });
+
     mostrarGanadores();
 });
 
 function updateUI() {
-    document.getElementById("balanceAmount").textContent = `$${betBalance}`;
-    document.getElementById("totalBet").textContent = `$${totalBet}`;
-    document.getElementById("winningAmount").textContent = `$${winnings}`;
+    document.getElementById("balanceAmount").textContent = formatMoney(betBalance);
+    document.getElementById("totalBet").textContent = formatMoney(totalBet);
+    document.getElementById("winningAmount").textContent = formatMoney(winnings);
 
     const totalCredits = document.getElementById("totalCredits");
-    if (totalCredits) totalCredits.textContent = `$${betBalance}`;
+    if (totalCredits) {
+        totalCredits.textContent = formatMoney(betBalance);
+    }
+    updateSpinButtonState();
 }
 
 function processWinner(winner) {
@@ -97,6 +180,9 @@ function processWinner(winner) {
     calculateWinnings(result, color);
     showResult(result);
     mostrarGanadores();
+    setTimeout(() => {
+        if (!canGuestPlay()) return;
+    }, 4000);
 }
 
 function calculateWinnings(result, color) {
@@ -123,6 +209,7 @@ function calculateWinnings(result, color) {
 
     winnings = payout;
     betBalance += payout;
+    lastTotalBet = totalBet;
 
     const user = getUser();
     if (user) {
@@ -152,10 +239,15 @@ function calculateWinnings(result, color) {
                 gameType: "roulette",
                 betAmount: totalBetBeforeRound,
                 result: payout > 0 ? "win" : "loss",
-                payout: payout,
+                payout: payout > 0 ? payout : lastTotalBet,
                 rouletteNumber: result
             })
         }).catch(err => console.error("Error al guardar apuesta", err));
+    }
+    else 
+    {
+        // Invitado actualizar balance en localStorage
+        localStorage.setItem("guestBalance", betBalance);
     }
 
     placedBets = {};
@@ -167,11 +259,19 @@ function calculateWinnings(result, color) {
 
 function showResult(result) {
     const overlay = document.createElement("div");
+
+    let winningsText = "";
+    if (winnings > 0) {
+        winningsText = `<div style="font-size: 3rem; margin-top: 10px; color: lightgreen; font-weight: bold;">+ ${formatMoney(winnings)}</div>`;
+    } else {
+        winningsText = `<div style="font-size: 3rem; margin-top: 10px; color: red; font-weight: bold;">- ${formatMoney(lastTotalBet)}</div>`;
+    }
+
     overlay.innerHTML = `
         <div style="font-size: 8rem; font-weight: bold; ${winnings > 0 ? "color: lightgreen;" : "color: white;"} text-shadow: 2px 2px 10px black;">
             ${result}
         </div>
-        ${winnings > 0 ? `<div style="font-size: 3rem; margin-top: 10px; color: lightgreen; font-weight: bold;">+ $${winnings}</div>` : ""}
+        ${winningsText}
     `;
 
     Object.assign(overlay.style, {
@@ -191,8 +291,8 @@ function showResult(result) {
     });
 
     document.body.appendChild(overlay);
-    setTimeout(() => overlay.remove(), 3000);
     mostrarGanadores(result);
+    setTimeout(() => overlay.remove(), 3000);
 }
 
 function undoLastBet() {
@@ -223,33 +323,43 @@ function resetAllBets() {
     updateUI();
 }
 
-async function mostrarGanadoresDesdeDB() {
-  const user = getUser();
-  if (!user) return;
+function mostrarGanadoresDesdeDB() {
+    const user = getUser();
+    if (!user) return;
 
-  const bets = await fetchUserBets();
+    fetch(`/bets/user/${user._id}`, {
+        headers: { "x-auth": user.password }
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("No se pudieron obtener las apuestas");
+        return res.json();
+    })
+    .then(bets => {
+        // Solo apuestas de ruleta y ordenar por creación (suponiendo que tienen createdAt o similar)
+        const rouletteBets = bets
+            .filter(b => b.gameType === "roulette")
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // 🔥 ORDENAR DE MÁS NUEVAS A MÁS VIEJAS
 
-  const ultimosNumeros = bets.slice(0, 5).map(b => b.rouletteNumber);
+        // Tomar las primeras 5 que son las últimas jugadas
+        const ultimosNumeros = rouletteBets.slice(0, 5).map(b => b.rouletteNumber);
 
-  const container = document.getElementById("ganadoresList");
-  if (!container) return;
+        const container = document.getElementById("ganadoresList");
+        if (!container) return;
 
-  container.innerHTML = "";
+        container.innerHTML = "";
 
-  ultimosNumeros.forEach(num => {
-    const item = document.createElement("div");
-    const colorClass = num === 0 ? "green" : (numRed.includes(num) ? "red" : "black");
-    item.className = `ganador-item ${colorClass}`;
-    item.innerHTML = `<span class="number">${num}</span>`;
-
-    // Insertar al principio para que se vea como que se recorre
-    container.append(item);
-
-    // Si ya hay más de 5 → eliminar el último (el más viejo)
-    if (container.children.length > 5) {
-        container.removeChild(container.lastChild);
-    }
-});
+        // Mostrar en orden (último primero en pantalla)
+        ultimosNumeros.forEach(num => {
+            const item = document.createElement("div");
+            const colorClass = num === 0 ? "green" : (numRed.includes(num) ? "red" : "black");
+            item.className = `ganador-item ${colorClass}`;
+            item.innerHTML = `<span class="number">${num}</span>`;
+            container.appendChild(item);
+        });
+    })
+    .catch(err => {
+        console.error("Error al obtener apuestas del usuario:", err);
+    });
 }
 
 const ganadores = [];
@@ -276,7 +386,7 @@ function mostrarGanadores(n) {
         item.innerHTML = `<span class="number">${num}</span>`;
         container.appendChild(item);
     });
-}
+    }
   else 
   {
       
@@ -353,19 +463,81 @@ async function updateStatsModal() {
           li.classList.add("loss");
       }
 
-      li.textContent = `${index + 1}. ${result === "win" ? "Ganaste" : "Perdiste"} $${Math.abs(b.amount ?? b.payout)} - Número: ${b.number ?? b.rouletteNumber}`;
+      li.textContent = `${index + 1}. ${result === "win" ? "Ganaste" : "Perdiste"} ${formatMoney(Math.abs(b.amount ?? b.payout))} - Número: ${b.number ?? b.rouletteNumber}`;
       statsList.appendChild(li);
   });
 
-  document.getElementById("ratio").textContent = `${wins.length} / ${losses.length}`;
-  document.getElementById("netResult").textContent = bets.reduce((acc, b) => acc + (b.amount ?? (b.payout - b.betAmount)), 0);
+    const totalBets = wins.length + losses.length;
+    const winPercentage = totalBets > 0 ? (wins.length / totalBets * 100).toFixed(0) : 0;
+
+    document.getElementById("ratio").textContent = `${wins.length} / ${losses.length} (${winPercentage}%)`;
+
+    const netResult = bets.reduce((acc, b) => {
+        return acc + (b.result === "win" ? b.payout : -b.betAmount);
+    }, 0);
+    
+    document.getElementById("netResult").textContent = formatMoney(netResult);
 }
 
 
-function disableSpinButton() {
-  document.getElementById("spinButton")?.setAttribute("disabled", "true");
+function updateSpinButtonState() {
+    const spinButton = document.getElementById("spinButton");
+    if (totalBet <= 0) {
+        spinButton.setAttribute("disabled", "true");
+        spinButton.classList.add("disabled");
+    } else {
+        spinButton.removeAttribute("disabled");
+        spinButton.classList.remove("disabled");
+    }
 }
 
-function enableSpinButton() {
-  document.getElementById("spinButton")?.removeAttribute("disabled");
+
+//Funcion guest
+function canGuestPlay() {
+    const user = getUser();
+
+    // Si es invitado y no tiene balance o no tiene apuesta actual → no puede jugar
+    if (!user && (betBalance <= 0 && totalBet <= 0)) {
+        alert("No tienes créditos. Debes iniciar sesión para seguir jugando.");
+
+        const loginModal = document.getElementById("loginRegisterModal");
+        if (loginModal) {
+            const modal = new bootstrap.Modal(loginModal);
+            modal.show();
+        }
+
+        return false;
+    }
+
+    return true;
+}
+
+
+function setChipsDisabled(disabled) {
+    document.querySelectorAll(".chip").forEach(chip => {
+        chip.style.pointerEvents = disabled ? "none" : "auto";
+    });
+}
+
+// FUNCION REUTILIZABLE PARA COLOCAR APUESTA
+function placeBet(cell, value, color) {
+    const name = cell.dataset.name;
+    if (!name) return;
+
+    betBalance -= value;
+    totalBet += value;
+    placedBets[name] = (placedBets[name] || 0) + value;
+
+    const chip = document.createElement("div");
+    chip.classList.add("chip", "placed-chip");
+    chip.textContent = value;
+    chip.style.position = "absolute";
+    chip.style.zIndex = 100 + chipCounter++;
+    chip.style.background = color;
+    chip.style.top = `${cell.clientHeight / 2 - 12 + Math.floor(Math.random() * 8 - 4)}px`;
+    chip.style.left = `${cell.clientWidth / 2 - 12 + Math.floor(Math.random() * 8 - 4)}px`;
+    cell.appendChild(chip);
+
+    placedChipsStack.push({ chip, cell, value, name });
+    updateUI();
 }
