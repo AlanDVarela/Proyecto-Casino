@@ -18,7 +18,7 @@ body {
   }
   
   .card {
-    background-color: #131313;
+    background-color: #111111;
     border: 1.5px solid #d4af37;
     border-radius: 16px;
     padding: 30px;
@@ -36,8 +36,8 @@ body {
   }
   
   .card img {
-    width: 500px;
-    height: auto;
+    width: 95%;
+    height: 100%;
     max-width: 350px;
     margin-bottom: 20px;
   }
