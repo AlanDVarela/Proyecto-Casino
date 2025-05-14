@@ -266,5 +266,11 @@
     border-radius: 6px;             /* Bordes redondeados */
     margin-bottom: 12px;            /* Separación inferior */
   }
+  /* cursor de mano sobre palanca y botón */
+.lever,
+.spin-button {
+  cursor: pointer;
+}
+
   
   
